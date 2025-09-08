@@ -1,0 +1,159 @@
+[
+  {
+    "key": "dashboard",
+    "filters": []
+  },
+  {
+    "key": "host-application",
+    "filters": ["text", "filterStatus"],
+    "filtersData": {
+      "filterStatus": {
+        "options": [
+          {
+            "": "All"
+          },
+          {
+            "PENDING": "Pending"
+          },
+          {
+            "APPROVED": "Approved"
+          },
+          {
+            "REJECTED": "Rejected"
+          },
+          {
+            "SUSPENDED": "Suspended"
+          }
+        ],
+        "isDynamic": false,
+        "returnKey": "options",
+        "label": "Status",
+        "icon": "filter_alt"
+      }
+    }
+  },
+  {
+    "key": "permission",
+    "filters": ["text", "date", "filterPermission"],
+    "filtersData": {
+      "filterPermission": {
+        "options": [
+          {
+            "": "All"
+          }
+        ],
+        "isDynamic": true,
+        "call": "permissionService.getPermissionsOptions",
+        "params": {
+          "parentOnly": true
+        },
+        "returnKey": "permissionStatus",
+        "label": "Filter",
+        "icon": "filter_alt"
+      }
+    }
+  },
+  {
+    "key": "role",
+    "filters": ["text", "date"],
+    "filtersData": {}
+  },
+  {
+    "key": "admin",
+    "filters": ["text", "date", "filterRoles"],
+    "filtersData": {
+      "filterRoles": {
+        "options": [
+          {
+            "": "All"
+          }
+        ],
+        "isDynamic": true,
+        "call": "roleService.rolesFiltersOptions",
+        "params": {
+          "getAll": true
+        },
+        "returnKey": "options",
+        "label": "Roles",
+        "icon": "filter_alt"
+      }
+    }
+  },
+  {
+    "key": "customer",
+    "filters": ["text", "date"],
+    "filtersData": {}
+  },
+
+  {
+    "key": "general-enquiry",
+    "filters": ["text", "date"],
+    "filtersData": {}
+  },
+
+  {
+    "key": "enquiry",
+    "filters": ["text", "date"],
+    "filtersData": {}
+  },
+
+  {
+    "key": "testimonial",
+    "filters": ["text", "date"],
+    "filtersData": {}
+  },
+  {
+    "key": "post",
+    "filters": ["text", "date", "filterCategory"],
+    "filtersData": {
+      "filterCategory": {
+        "options": [
+          {
+            "": "All"
+          }
+        ],
+        "isDynamic": true,
+        "call": "blogCategoryService.categoryFiltersOptions",
+        "params": {
+          "getAll": true
+        },
+        "returnKey": "options",
+        "label": "Category",
+        "icon": "filter_alt"
+      }
+    }
+  },
+  {
+    "key": "category",
+    "filters": ["text", "date"]
+  },
+  {
+    "key": "author",
+    "filters": ["text", "date"]
+  },
+  {
+    "key": "subscriber",
+    "filters": ["text", "date", "filterRoles"],
+    "filtersData": {
+      "filterRoles": {
+        "options": [
+          {
+            "": "All"
+          }
+        ],
+        "isDynamic": true,
+        "call": "roleService.rolesFiltersOptions",
+        "params": {
+          "getAll": true
+        },
+        "returnKey": "options",
+        "label": "Filter",
+        "icon": "filter_alt"
+      }
+    }
+  },
+  {
+    "key": "settings",
+    "filters": []
+  }
+]
