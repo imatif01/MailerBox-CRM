@@ -11,6 +11,7 @@ import {
   SubMenuTitle,
   ArrowHolder,
 } from './SideNav.styles';
+import { useLocation } from 'react-router-dom';
 
 function SubMenu({ item }) {
   const { toggleSideNav } = useContext(SideNavContext);

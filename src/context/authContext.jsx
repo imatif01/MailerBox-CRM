@@ -10,8 +10,8 @@ const context = {};
 export const AuthContext = createContext(context);
 
 export const AuthContextProvider = props => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(!!getCookie(process.env.REACT_APP_CRM_TOKEN_COOKIE));
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!getCookie(process.env.REACT_APP_CRM_TOKEN_COOKIE));
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
   const [loading_user, setLoadingUser] = useState(false);
@@ -39,57 +39,51 @@ export const AuthContextProvider = props => {
     }
   };
 
+  const getPermissions = () => {
+    setLoadingUser(true);
+    cancellablePromise(authService.getCurrentUser())
+      .then(res => {
+              const permissions = res?.permissions || [];
+
+             const navPages = permissions
+        .filter(p => p.includes('.nav'))
+        .map(p => `/${p.replace('.nav', '')}`);
+        setAllowedPages(navPages);
+        setCookie(
+          process.env.REACT_APP_ALLOWED_PAGES_COOKIE,
+          JSON.stringify(navPages),
+        );
+        setLoadingUser(false);
+        setUser(res);
+      })
+      .catch(err => {
+        setAllowedPages(['no-permissions']);
+        setCookie(process.env.REACT_APP_ALLOWED_PAGES_COOKIE, JSON.stringify(['no-permissions']));
+        setLoadingUser(false);
+        Toast({
+          type: 'error',
+          message: err.message,
+        });
+      });
+  };
+
   // const getPermissions = () => {
   //   setLoadingUser(true);
-  //   cancellablePromise(authService.getCurrentUser())
-  //     .then(res => {
-  //       setAllowedPages([
-  //         ...(res?.data?.permissions?.filter(p => p.includes('.nav')) || []).map(p => `${p.split('.')[0]}`),
-  //       ]);
-  //       setCookie(
-  //         process.env.REACT_APP_ALLOWED_PAGES_COOKIE,
-  //         JSON.stringify([
-  //           ...(res?.data?.permissions?.filter(p => p.includes('.nav')) || []).map(p => `/${p.split('.')[0]}`),
-  //         ]),
-  //       );
-  //       setLoadingUser(false);
-  //       setUser(res?.data);
-  //     })
-  //     .catch(err => {
-  //       setAllowedPages(['no-permissions']);
-  //       setCookie(process.env.REACT_APP_ALLOWED_PAGES_COOKIE, JSON.stringify(['no-permissions']));
-  //       setLoadingUser(false);
-  //       Toast({
-  //         type: 'error',
-  //         message: err.message,
-  //       });
-  //     });
+
+  //   const defaultPermissions = ['dashboard', 'post', 'category', 'author', 'admin', 'permission'];
+
+  //   setAllowedPages(defaultPermissions);
+  //   setCookie(process.env.REACT_APP_ALLOWED_PAGES_COOKIE, JSON.stringify(defaultPermissions.map(p => `/${p}`)));
+
+  //   setLoadingUser(false);
+
+  //   setUser({
+  //     id: 'default-user',
+  //     name: 'Guest User',
+  //     email: 'guest@example.com', // 👈 add this
+  //     permissions: defaultPermissions.map(p => `${p}.nav`),
+  //   });
   // };
-
-const getPermissions = () => {
-  setLoadingUser(true);
-
-  const defaultPermissions = ['dashboard','post','category','author','admin','permission'];
-
-  setAllowedPages(defaultPermissions);
-  setCookie(
-    process.env.REACT_APP_ALLOWED_PAGES_COOKIE,
-    JSON.stringify(defaultPermissions.map(p => `/${p}`))
-  );
-
-  setLoadingUser(false);
-
-setUser({
-  id: 'default-user',
-  name: 'Guest User',
-  email: 'guest@example.com',   // 👈 add this
-  permissions: defaultPermissions.map(p => `${p}.nav`),
-});
-
-};
-
-
-
 
   /**
    * @description - This function is used to fetch the user details from the server
@@ -101,28 +95,26 @@ setUser({
   }, [isLoggedIn]);
 
   const onLogin = async ({ email, password }) => {
-    // setLoadingUser(true);
-      setIsLoggedIn(true);
-    console.log("login")
-    // try {
-    //   const res = await authService.login({
-    //     email,
-    //     password,
-    //   });
+    setLoadingUser(true);
+    try {
+      const res = await authService.login({
+        email,
+        password,
+      });
 
-    //   if (!res?.data?.token) {
-    //     throw new Error(res?.message);
-    //   }
-    //   setLoadingUser(false);
-    //   setCookie(process.env.REACT_APP_CRM_TOKEN_COOKIE, res?.data?.token);
-    //   setIsLoggedIn(true);
-    // } catch ({ message }) {
-    //   setIsLoggedIn(false);
-    //   setLoadingUser(false);
-    //   Toast({ type: 'error', message });
-    // } finally {
-    //   setLoadingUser(false);
-    // }
+      if (!res?.token) {
+        throw new Error(res?.message);
+      }
+      setLoadingUser(false);
+      setCookie(process.env.REACT_APP_CRM_TOKEN_COOKIE, res?.token);
+      setIsLoggedIn(true);
+    } catch ({ message }) {
+      setIsLoggedIn(false);
+      setLoadingUser(false);
+      Toast({ type: 'error', message });
+    } finally {
+      setLoadingUser(false);
+    }
   };
 
   useEffect(() => {
@@ -156,7 +148,7 @@ setUser({
       }
       if (cookie === process.env.REACT_APP_ALLOWED_PAGES_COOKIE) {
         if (JSON.stringify(allowedPages) !== value && isLoggedIn) {
-          // getPermissions();
+          getPermissions();
         }
       }
     }, 1000);

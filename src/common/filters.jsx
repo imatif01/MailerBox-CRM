@@ -5,7 +5,6 @@ import { format } from 'date-fns';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import debounce from 'lodash/debounce';
-
 import Grid from 'components/atoms/Grid';
 import GridCol from 'components/atoms/GridCol';
 import Field from 'components/molecules/Field';

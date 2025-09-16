@@ -46,8 +46,10 @@ export default function Index() {
   useEffect(() => {
     if (user?.email && !loading_user) {
       let fileToLoad = view;
+      
       const allowedPages = __allowedPages;
-      if (!allowedPages.includes(fileToLoad)) {
+      const normalizedAllowed = __allowedPages.map(p => p.replace(/^\//, "")); // remove leading "/"
+    if (!normalizedAllowed.includes(fileToLoad)) {
         fileToLoad = allowedPages.length > 0 ? allowedPages[0] : 'no-permissions';
       }
       if (

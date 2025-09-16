@@ -28,8 +28,7 @@ function Router() {
         element={
           <PublicRoute
             isLoggedIn={isLoggedIn}
-            // redirectTo={allowedPages.length > 0 ? `/${allowedPages[0]}` : '/dashboard'}
-            redirectTo='/dashboard'
+            redirectTo={allowedPages.length > 0 ? allowedPages[0]: '/dashboard'}
           />
         }>
         <Route path="*" element={<Login />} />

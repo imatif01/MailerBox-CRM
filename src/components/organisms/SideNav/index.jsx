@@ -3,10 +3,9 @@ import Styled from 'styled-components/macro';
 import { useMediaPredicate } from 'react-media-hook';
 import { SideNavContext } from 'context/sideNavContext';
 import { LoadingContext } from 'context/loadingContext';
-import LogoFull from 'assets/images/logo.svg';
+import LogoFull from 'assets/images/logo-white.svg';
 import rightArrows from 'assets/images/rightArrows.svg';
 import leftArrows from 'assets/images/leftArrows.svg';
-
 import { AuthContext } from 'context/authContext';
 import sideNavData from 'nav.json';
 import AdminActions from 'components/organisms/AdminActions';
@@ -36,25 +35,14 @@ function Navbar() {
   useEffect(() => {
     !sideNavState && document.body.classList.remove('nav-active');
   }, [sideNavState]);
-  const sideBarItems = useMemo(() => {
-    return sideNavData
-      .filter(({ file }) => {
-        const normalizedSearchText = searchText.trim().toLowerCase();
-        const pluralSearchText = normalizedSearchText.endsWith('s')
-          ? normalizedSearchText.slice(0, -1)
-          : `${normalizedSearchText}s`;
-        const normalizedFile = file.toLowerCase();
-        return (
-          allowedPages.includes(file) &&
-          (normalizedFile.includes(normalizedSearchText) || normalizedFile.includes(pluralSearchText))
-        );
-      })
-      .map((item, index) => <SubMenu item={item} key={index} />);
-  }, [searchText, sideNavData, allowedPages]);
 
+  const sideBarItems = useMemo(() => {
+    return sideNavData?.map((item, index) => <SubMenu item={item} key={index} />);
+  }, [searchText, sideNavData, allowedPages]);
   const toggleVisibility = () => {
     setActive(!active);
   };
+
   const handleLogoClick = () => {
     if (sideNavState) {
       toggleSideNav();

@@ -33,7 +33,7 @@
     }
   },
   {
-    "key": "permission",
+    "key": "permissions",
     "filters": ["text", "date", "filterPermission"],
     "filtersData": {
       "filterPermission": {
@@ -54,12 +54,12 @@
     }
   },
   {
-    "key": "role",
+    "key": "roles",
     "filters": ["text", "date"],
     "filtersData": {}
   },
   {
-    "key": "admin",
+    "key": "admins",
     "filters": ["text", "date", "filterRoles"],
     "filtersData": {
       "filterRoles": {
@@ -80,7 +80,7 @@
     }
   },
   {
-    "key": "customer",
+    "key": "customers",
     "filters": ["text", "date"],
     "filtersData": {}
   },
@@ -92,18 +92,18 @@
   },
 
   {
-    "key": "enquiry",
+    "key": "enquiries",
     "filters": ["text", "date"],
     "filtersData": {}
   },
 
   {
-    "key": "testimonial",
+    "key": "testimonials",
     "filters": ["text", "date"],
     "filtersData": {}
   },
   {
-    "key": "post",
+    "key": "posts",
     "filters": ["text", "date", "filterCategory"],
     "filtersData": {
       "filterCategory": {
@@ -124,15 +124,15 @@
     }
   },
   {
-    "key": "category",
+    "key": "categories",
     "filters": ["text", "date"]
   },
   {
-    "key": "author",
+    "key": "authors",
     "filters": ["text", "date"]
   },
   {
-    "key": "subscriber",
+    "key": "subscribers",
     "filters": ["text", "date", "filterRoles"],
     "filtersData": {
       "filterRoles": {

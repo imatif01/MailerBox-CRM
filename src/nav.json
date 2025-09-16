@@ -9,7 +9,7 @@
   },
   {
     "name": "Permissions",
-    "file": "permission",
+    "file": "permissions",
     "navigations": true,
     "live": true,
     "buttons": [
@@ -19,7 +19,7 @@
   },
   {
     "name": "Roles",
-    "file": "role",
+    "file": "roles",
     "navigations": true,
     "live": true,
     "buttons": [
@@ -29,82 +29,12 @@
   },
   {
     "name": "Admins",
-    "file": "admin",
+    "file": "admins",
     "navigations": true,
     "live": true,
     "buttons": [
       "create-admin"
     ],
     "icon": "admin_panel_settings"
-  },
-  {
-    "name": "Customers",
-    "file": "customer",
-    "navigations": true,
-    "live": true,
-    "icon": "content_paste_search"
-  },
-  {
-    "name": "Subscribers",
-    "file": "subscriber",
-    "navigations": true,
-    "live": true,
-    "icon": "subscriptions"
-  },
-  {
-    "name": "General Enquiry",
-    "file": "general-enquiry",
-    "navigations": true,
-    "live": true,
-    "icon": "contacts"
-  },
-  {
-    "name": "Enquiry",
-    "file": "enquiry",
-    "navigations": true,
-    "live": true,
-    "icon": "contacts"
-  },
-  {
-    "name": "Posts",
-    "file": "post",
-    "navigations": true,
-    "live": true,
-    "buttons": [
-      "create-post"
-    ],
-    "icon": "edit_note",
-    "subNav": [
-      {
-        "name": "Categories",
-        "file": "category",
-        "navigations": true,
-        "live": true,
-        "buttons": [
-          "create-category"
-        ],
-        "icon": ""
-      },
-      {
-        "name": "Authors",
-        "file": "author",
-        "navigations": true,
-        "buttons": [
-          "create-author"
-        ],
-        "live": true,
-        "icon": ""
-      }
-    ]
-  },
-  {
-    "name": "Settings",
-    "file": "settings",
-    "navigations": true,
-    "live": true,
-    "buttons": [
-      "create-toaster"
-    ],
-    "icon": "settings"
   }
 ]

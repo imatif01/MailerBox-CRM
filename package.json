@@ -37,8 +37,8 @@
   },
   "scripts": {
     "win-start": "env-cmd -e production react-scripts start",
-    "build": "env-cmd -e development react-scripts build",
-    "start": "env-cmd -e development react-scripts start",
+    "build": "env-cmd -e local react-scripts build",
+    "start": "env-cmd -e local react-scripts start",
     "build:staging": "env-cmd -e staging react-scripts build",
     "start:staging": "env-cmd -e staging react-scripts start",
     "build:production": "env-cmd -e production react-scripts build",

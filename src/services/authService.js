@@ -1,10 +1,10 @@
 import { Fetch } from '../helpers/fetchWrapper';
 
 const authService = {
-  _url: `${process.env.REACT_APP_AUTH_URL}`,
+  _url: `${process.env.REACT_APP_ADMIN_URL}`,
 
   async login({ email = '', password = '' }) {
-    let res = await Fetch.post(`${this._url}/admin-login`, {
+    let res = await Fetch.post(`${this._url}/signin`, {
       email,
       password,
     });
@@ -17,7 +17,7 @@ const authService = {
   },
 
   async getCurrentUser() {
-    let res = await Fetch.get(`${this._url}/get-admin-details`);
+    let res = await Fetch.get(`${this._url}/perms`);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
