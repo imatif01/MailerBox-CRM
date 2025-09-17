@@ -52,7 +52,7 @@ function SubMenu({ item }) {
         {isSubnavOpen && (
           <StyledSubMenu>
             {item.subNav
-              .filter(subNavItem => allowedPages.includes(subNavItem.file))
+              // .filter(subNavItem => allowedPages.includes(subNavItem.file))
               .map((subNavItem, index) => (
                 <SubMenuItem key={index}>
                   {/* Pass the event to handleItemClick to ensure it stops propagation correctly */}

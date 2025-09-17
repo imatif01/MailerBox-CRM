@@ -36,5 +36,30 @@
       "create-admin"
     ],
     "icon": "admin_panel_settings"
+  },
+
+   {
+    "name": "Blogs",
+    "file": "blogs",
+    "navigations": true,
+    "live": true,
+    "buttons": [
+      "create-blog"
+    ],
+    "icon": "edit_note",
+    "subNav": [
+      {
+        "name": "categories",
+        "file": "categories",
+        "navigations": true,
+        "live": true,
+        "buttons": [
+          "create-category"
+        ],
+        "icon": "category"
+      }
+     
+    ]
   }
 ]
+

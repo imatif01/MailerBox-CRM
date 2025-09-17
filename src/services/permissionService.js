@@ -45,13 +45,13 @@ const permissionService = {
     filterPermission = '',
   }) {
     let res = await Fetch.get(
-      `${this._url}/get-all-permissions?page=${page}&itemsPerPage=${pageSize}&searchText=${searchText}&filterText=${filterPermission}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}&parentOnly=${parentOnly}`,
+      `${this._url}/get-all-permission?page=${page}&itemsPerPage=${pageSize}&searchText=${searchText}&filterText=${filterPermission}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}&parentOnly=${parentOnly}`,
     );
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return {
-        permissions: res?.data?.items,
-        totalItems: res?.data?.totalItems,
+        permissions: res?.items,
+        totalItems: res?.totalItems,
       };
     }
     const { message } = await res.json();
@@ -59,7 +59,7 @@ const permissionService = {
   },
 
   async createPermission(payload) {
-    let res = await Fetch.post(`${this._url}/create-permission`, payload);
+    let res = await Fetch.post(`${this._url}/permission`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -69,7 +69,7 @@ const permissionService = {
   },
 
   async updatePermission(id, payload) {
-    let res = await Fetch.put(`${this._url}/update-permission/${id}`, payload);
+    let res = await Fetch.put(`${this._url}/permission/${id}`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -79,7 +79,7 @@ const permissionService = {
   },
 
   async deletePermission(id) {
-    let res = await Fetch.delete(`${this._url}/delete-permission/${id}`);
+    let res = await Fetch.delete(`${this._url}/permission/${id}`);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;

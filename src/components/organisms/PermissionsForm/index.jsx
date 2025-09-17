@@ -48,7 +48,7 @@ function PermissionForm({ permission, onClose = () => {} }) {
     try {
       setLoading(true);
       if (permission) {
-        await permissionService.updatePermission(permission.id, {
+        await permissionService.updatePermission(permission._id, {
           can: data.can,
           description: data.description,
           route: data.route,

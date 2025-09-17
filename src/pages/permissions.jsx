@@ -41,7 +41,7 @@ export default function Permissions() {
   };
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={2}>
-      {hasPermission('permission.edit') && (
+      {hasPermission('permissions.edit') && (
         <ModalContainer
           lg
           title="Edit Permission"
@@ -61,12 +61,12 @@ export default function Permissions() {
           content={({ onClose }) => <PermissionsForm onClose={onClose} permission={_} />}
         />
       )}
-      {hasPermission('permission.delete') && (
+      {hasPermission('permissions.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"
           deleteModal
-          onOk={() => onDeletePermission(_.id)}
+          onOk={() => onDeletePermission(_._id)}
           btnComponent={({ onClick }) => (
             <Tooltip title="Delete" type="dark">
               <Button

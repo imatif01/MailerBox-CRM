@@ -16,7 +16,7 @@ function CategoryForm({ category, onClose = () => {} }) {
   useEffect(() => {
     if (category) {
       form.setFieldsValue({
-        title: category?.categoryTitle,
+        title: category?.title,
       });
     }
   }, [category]);
@@ -25,12 +25,12 @@ function CategoryForm({ category, onClose = () => {} }) {
     try {
       setLoading(true);
       if (category) {
-        await categoryService.updateCategory(category.id, {
-          categoryTitle: data?.title,
+        await categoryService.updateCategory(category._id, {
+          title: data?.title,
         });
       } else {
         await categoryService.createCategory({
-          categoryTitle: data?.title,
+          title: data?.title,
         });
       }
       refetch();

@@ -9,8 +9,8 @@ import ConfirmationModal from 'components/molecules/ConfirmationModal';
 import Tooltip from 'components/atoms/Tooltip';
 import Button from 'components/atoms/Button';
 import Toast from 'components/molecules/Toast';
-import categoryService from 'services/blogCategoryService';
 import CategoryForm from 'components/organisms/CategoryForm';
+import categoryService from 'services/blogCategoryService';
 
 export default function CategoryPage() {
   const [searchQuery, setSearchQuery] = useState({
@@ -41,7 +41,7 @@ export default function CategoryPage() {
   };
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={2}>
-      {hasPermission('post.create') && (
+      {hasPermission('categories.update') && (
         <ModalContainer
           lg
           title="Edit Category"
@@ -55,12 +55,12 @@ export default function CategoryPage() {
           content={({ onClose }) => <CategoryForm onClose={onClose} category={_} />}
         />
       )}
-      {hasPermission('post.create') && (
+      {hasPermission('categories.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"
           deleteModal
-          onOk={() => onDeleteCategory(_.id)}
+          onOk={() => onDeleteCategory(_._id)}
           btnComponent={({ onClick }) => (
             <Tooltip title="Delete" type="dark">
               <Button unStyled size={20} className="delete-btn" onClick={onClick}>
@@ -76,7 +76,7 @@ export default function CategoryPage() {
     () => ({
       category_rows: category_data?.categories?.map(_ => [
         format(new Date(_?.created_at), 'yyyy-MM-dd'),
-        _.categoryTitle,
+        _.title,
         actionBtns(_),
       ]),
       totalCount: category_data?.totalItems,

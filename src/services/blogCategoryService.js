@@ -9,7 +9,7 @@ const STATUS = {
 };
 
 const categoryService = {
-  _url: `${process.env.REACT_APP_BLOG_URL}/category`,
+  _url: `${process.env.REACT_APP_CATEGORY_URL}`,
 
   GetCategories(searchQuery, refetch) {
     const [categories, setCategories] = useState({
@@ -41,8 +41,8 @@ const categoryService = {
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return {
-        categories: res?.data?.items,
-        totalItems: res?.data?.totalItems,
+        categories: res?.items,
+        totalItems: res?.totalItems,
       };
     }
     const { message } = await res.json();
@@ -50,7 +50,7 @@ const categoryService = {
   },
 
   async createCategory(payload) {
-    let res = await Fetch.post(`${this._url}/create-category`, payload);
+    let res = await Fetch.post(`${this._url}/create`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -60,7 +60,7 @@ const categoryService = {
   },
 
   async updateCategory(id, payload) {
-    let res = await Fetch.put(`${this._url}/update-category/${id}`, payload);
+    let res = await Fetch.put(`${this._url}/update/${id}`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -70,7 +70,7 @@ const categoryService = {
   },
 
   async deleteCategory(id, payload) {
-    let res = await Fetch.delete(`${this._url}/delete-category/${id}`, payload);
+    let res = await Fetch.delete(`${this._url}/delete/${id}`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;

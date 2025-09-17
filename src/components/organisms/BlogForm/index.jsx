@@ -27,8 +27,8 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
 
   const categoryOpts = useMemo(() => {
     return category_data?.categories.map(category => ({
-      label: category.categoryTitle,
-      value: category.id,
+      label: category.title,
+      value: category._id,
     }));
   }, [category_data]);
 
@@ -43,23 +43,22 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
 
   const editorRef = useRef(null);
   useEffect(() => {
-    if (editorRef.current && blogData?.content?.description) {
-      editorRef.current.setContent(blogData?.content?.description);
+    if (editorRef.current && blogData?.description) {
+      editorRef.current.blogData?.description;
     }
   }, [description]);
-
   useEffect(() => {
     if (isEdit) {
       form.setFieldsValue({
-        title: blogData?.content?.title,
-        metaTitle: blogData?.content?.metaTitle,
-        metaDescription: blogData?.content?.metaDescription,
-        authorId: authorsOpts?.find(data => data.value === blogData?.author?.id),
-        category: categoryOpts?.find(data => data.value === blogData?.category?.id),
+        title: blogData?.title,
+        metaTitle: blogData?.metaTitle,
+        metaDescription: blogData?.metaDescription,
+        // authorId: authorsOpts?.find(data => data.value === blogData?.author?.id),
+        category: categoryOpts?.find(data => data.value === blogData?.category?._id),
         bannerImg: blogData?.bannerImg,
         slug: blogData?.slug,
       });
-      setDescription(blogData?.content?.description);
+      setDescription(blogData?.description);
     }
   }, [blogData, categoryOpts, authorsOpts]);
 
@@ -73,25 +72,19 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
     setLoading(true);
 
     const postData = {
-      authorId: data?.authorId?.value,
-      categoryId: data?.category?.value,
+      category: data?.category?.value,
       bannerImg: data?.bannerImg,
-      content:
-        // [
-        {
-          // language: data?.language?.value,
-          title: data.title,
-          description: desc,
-          metaTitle: data.metaTitle,
-          metaDescription: data.metaDescription,
-        },
-      // ],
+
+      title: data.title,
+      description: desc,
+      metaTitle: data.metaTitle,
+      metaDescription: data.metaDescription,
     };
 
     try {
       let res;
       if (isEdit) {
-        await blogService.updateBlog(blogData.id, convertToFormData(postData));
+        await blogService.updateBlog(blogData._id, convertToFormData(postData));
       } else {
         res = await blogService.createBlog(convertToFormData(postData));
       }
@@ -238,7 +231,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
         </>
         {/* )} */}
 
-        <Form.Item
+        {/* <Form.Item
           sm
           options={authorsOpts}
           isSearchable
@@ -255,7 +248,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
             // },
           ]}>
           <Select />
-        </Form.Item>
+        </Form.Item> */}
       </Grid>
       {/* {!isEdit && ( */}
       <Grid

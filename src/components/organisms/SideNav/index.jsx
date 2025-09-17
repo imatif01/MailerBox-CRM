@@ -42,7 +42,6 @@ function Navbar() {
   const toggleVisibility = () => {
     setActive(!active);
   };
-
   const handleLogoClick = () => {
     if (sideNavState) {
       toggleSideNav();

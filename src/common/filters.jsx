@@ -298,7 +298,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
             <Skeleton rectangle height={40} width={131} css="border-radius:8px !important;" />
           ) : (
             <>
-              {buttons.includes('create-permission') && hasPermission('permission.create') && (
+              {buttons.includes('create-permission') && hasPermission('permissions.create') && (
                 <ModalContainer
                   lg
                   title="Create Permission"
@@ -315,7 +315,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                 />
               )}
 
-              {buttons.includes('create-admin') && hasPermission('admin.create') && (
+              {buttons.includes('create-admin') && hasPermission('admins.create') && (
                 <ModalContainer
                   lg
                   title="Create Admin"
@@ -331,7 +331,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                   content={({ onClose }) => <AdminForm onClose={onClose} />}
                 />
               )}
-              {buttons.includes('create-role') && hasPermission('role.create') && (
+              {buttons.includes('create-role') && hasPermission('roles.create') && (
                 <ModalContainer
                   lg
                   title="Create Role"
@@ -365,7 +365,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                 />
               )}
 
-              {buttons.includes('create-post') && hasPermission('post.create') && (
+              {buttons.includes('create-blog') && hasPermission('blogs.cerate') && (
                 <ModalContainer
                   lg
                   title="Create Post"
@@ -382,7 +382,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                 />
               )}
 
-              {buttons.includes('create-category') && hasPermission('category.create') && (
+              {buttons.includes('create-category') && hasPermission('categories.create') && (
                 <ModalContainer
                   lg
                   title="Create Category"
@@ -398,7 +398,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                   content={({ onClose }) => <CategoryForm onClose={onClose} />}
                 />
               )}
-              {buttons.includes('create-author') && hasPermission('author.create') && (
+              {/* {buttons.includes('create-author') && hasPermission('author.create') && (
                 <ModalContainer
                   lg
                   title="Create Author"
@@ -413,7 +413,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                   )}
                   content={({ onClose }) => <AuthorForm onClose={onClose} />}
                 />
-              )}
+              )} */}
               {buttons.includes('create-toaster') && (
                 // && hasPermission('author.create')
                 <ModalContainer

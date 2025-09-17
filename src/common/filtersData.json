@@ -103,7 +103,7 @@
     "filtersData": {}
   },
   {
-    "key": "posts",
+    "key": "blogs",
     "filters": ["text", "date", "filterCategory"],
     "filtersData": {
       "filterCategory": {

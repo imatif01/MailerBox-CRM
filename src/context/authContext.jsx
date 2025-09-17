@@ -23,6 +23,7 @@ export const AuthContextProvider = props => {
   );
   const [active, setActive] = useState(false);
 
+
   const onLogout = async () => {
     try {
       if (isLoggedIn) {

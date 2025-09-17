@@ -30,7 +30,6 @@ export default function Blog() {
   const { refetch, hasPermission } = useContext(AuthContext);
 
   const { blogs_data, blogs_loading } = blogService.GetBlogs(searchQuery, refetch);
-
   const onDeleteBlog = async id => {
     try {
       await blogService.deleteBlog(id);
@@ -62,7 +61,7 @@ export default function Blog() {
           content={({ onClose }) => <BlogDetailModal onClose={onClose} blog={_} />}
         />
       )}
-      {hasPermission('post.edit') && (
+      {hasPermission('blogs.update') && (
         <ModalContainer
           lg
           title="Edit Post"
@@ -100,12 +99,12 @@ export default function Blog() {
           />
         )
       } */}
-      {hasPermission('post.delete') && (
+      {hasPermission('blogs.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"
           deleteModal
-          onOk={() => onDeleteBlog(_.id)}
+          onOk={() => onDeleteBlog(_._id)}
           btnComponent={({ onClick }) => (
             <Tooltip title="Delete" type="dark">
               <Button unStyled size={20} className="delete-btn" onClick={onClick}>
@@ -121,9 +120,9 @@ export default function Blog() {
     () => ({
       blogs_rows: blogs_data?.blogs?.map(_ => [
         format(new Date(_.created_at), 'yyyy-MM-dd'),
-        _?.content?.title,
+        _?.title,
         _.author?.name,
-        _.category?.categoryTitle,
+        _.category?.title,
         actionBtns(_),
       ]),
       totalCount: blogs_data.totalItems,

@@ -36,13 +36,13 @@ const blogService = {
 
   async getBlogs({ page, itemsPerPage, searchText, filterCategory, startDate, endDate, getAll = false }) {
     let res =
-      await Fetch.get(`${this._url}/get-all-blogs?page=${page}&itemsPerPage=${itemsPerPage}&searchText=${searchText}&filterCategory=${filterCategory}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}
+      await Fetch.get(`${this._url}/all?page=${page}&itemsPerPage=${itemsPerPage}&searchText=${searchText}&filterCategory=${filterCategory}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}
     `);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return {
-        blogs: res?.data?.items,
-        totalItems: res?.data?.totalItems,
+        blogs: res?.items,
+        totalItems: res?.totalItems,
       };
     }
     const { message } = await res.json();
@@ -50,7 +50,7 @@ const blogService = {
   },
 
   async createBlog(values) {
-    let res = await Fetch.upload(`${this._url}/create-blog`, 'POST', values);
+    let res = await Fetch.upload(`${this._url}/create`, 'POST', values);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -60,7 +60,7 @@ const blogService = {
   },
 
   async updateBlog(id, payload) {
-    let res = await Fetch.upload(`${this._url}/update-blog/${id}`, 'PUT', payload);
+    let res = await Fetch.upload(`${this._url}/single/${id}`, 'PUT', payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -100,7 +100,7 @@ const blogService = {
   },
 
   async deleteBlog(id) {
-    let res = await Fetch.delete(`${this._url}/delete-blog/${id}`);
+    let res = await Fetch.delete(`${this._url}/single/${id}`);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
