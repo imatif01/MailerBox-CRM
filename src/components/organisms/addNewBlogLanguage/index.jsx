@@ -187,6 +187,7 @@ function AddNewLanguageBlogForm({ id, currentLanguages, blogData, onClose = () =
           init={{
             image_resizing: true,
             height: 500,
+            paste_as_text: true,
             plugins: [
               'advlist',
               'lists',
@@ -202,6 +203,7 @@ function AddNewLanguageBlogForm({ id, currentLanguages, blogData, onClose = () =
               'media',
               'table',
               'help',
+              'code',
               'wordcount',
               'directionality',
             ],
@@ -209,7 +211,7 @@ function AddNewLanguageBlogForm({ id, currentLanguages, blogData, onClose = () =
               'undo redo | casechange blocks | bold italic backcolor | ' +
               'alignleft aligncenter alignright alignjustify | ' +
               'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help | link' +
-              'ltr rtl | a11ycheck code table help | link',
+              'ltr rtl | a11ycheck code table help | preview code | link',
 
             link_rel_list: [
               {

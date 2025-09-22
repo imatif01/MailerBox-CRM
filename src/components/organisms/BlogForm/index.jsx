@@ -272,6 +272,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
           init={{
             image_resizing: true,
             height: 500,
+            paste_as_text: true,
             plugins: [
               'advlist',
               'lists',
@@ -287,14 +288,15 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
               'media',
               'table',
               'help',
+              'code',
               'wordcount',
               'directionality',
             ],
             toolbar:
-              'undo redo | casechange blocks | bold italic backcolor | ' +
+              'undo redo | casechange blocks | bold italic bac color | ' +
               'alignleft aligncenter alignright alignjustify | ' +
-              'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help | link' +
-              'ltr rtl | a11ycheck code table help | link',
+              'bullist numlist checklist outdent indent | removeformat | a11ycheck table help | link' +
+              'ltr rtl | a11ycheck table help | preview code | link',
 
             link_rel_list: [
               {

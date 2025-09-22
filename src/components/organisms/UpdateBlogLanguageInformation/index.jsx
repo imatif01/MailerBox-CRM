@@ -178,6 +178,7 @@ function UpdateBlogLanguageInformationForm({ blogId, blogData, onClose = () => {
           init={{
             image_resizing: true,
             height: 500,
+            paste_as_text: true,
             plugins: [
               'advlist',
               'lists',
@@ -193,6 +194,7 @@ function UpdateBlogLanguageInformationForm({ blogId, blogData, onClose = () => {
               'media',
               'table',
               'help',
+              'code',
               'wordcount',
               'directionality',
             ],
@@ -200,7 +202,7 @@ function UpdateBlogLanguageInformationForm({ blogId, blogData, onClose = () => {
               'undo redo | casechange blocks | bold italic backcolor | ' +
               'alignleft aligncenter alignright alignjustify | ' +
               'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help | link' +
-              'ltr rtl | a11ycheck code table help | link',
+              'ltr rtl | a11ycheck code table help | preview code | link',
 
             link_rel_list: [
               {
