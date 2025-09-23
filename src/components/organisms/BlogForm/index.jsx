@@ -75,10 +75,11 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
       category: data?.category?.value,
       bannerImg: data?.bannerImg,
 
-      title: data.title,
+      title: data?.title,
       description: desc,
-      metaTitle: data.metaTitle,
-      metaDescription: data.metaDescription,
+      metaTitle: data?.metaTitle,
+      metaDescription: data?.metaDescription,
+      slug: data?.slug,
     };
 
     try {
@@ -264,7 +265,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
           <span style={{ color: 'red' }}>* </span>
           Editor
         </div>
-        <Editor
+         <Editor
           onInit={(evt, editor) => {
             editorRef.current = editor;
           }}
@@ -272,7 +273,6 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
           init={{
             image_resizing: true,
             height: 500,
-            paste_as_text: true,
             plugins: [
               'advlist',
               'lists',
@@ -287,16 +287,16 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
               'insertdatetime',
               'media',
               'table',
-              'help',
               'code',
+              'help',
               'wordcount',
               'directionality',
             ],
             toolbar:
-              'undo redo | casechange blocks | bold italic bac color | ' +
+              'undo redo | casechange blocks | bold italic backcolor | ' +
               'alignleft aligncenter alignright alignjustify | ' +
-              'bullist numlist checklist outdent indent | removeformat | a11ycheck table help | link' +
-              'ltr rtl | a11ycheck table help | preview code | link',
+              'bullist numlist checklist outdent indent | removeformat | a11ycheck preview code table help | link' +
+              'ltr rtl | a11ycheck code table help | link',
 
             link_rel_list: [
               {

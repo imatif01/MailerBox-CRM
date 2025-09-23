@@ -187,7 +187,6 @@ function AddNewLanguageBlogForm({ id, currentLanguages, blogData, onClose = () =
           init={{
             image_resizing: true,
             height: 500,
-            paste_as_text: true,
             plugins: [
               'advlist',
               'lists',
