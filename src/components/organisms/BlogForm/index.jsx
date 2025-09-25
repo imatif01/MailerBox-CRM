@@ -55,7 +55,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
         // authorId: authorsOpts?.find(data => data.value === blogData?.author?.id),
         category: categoryOpts?.find(data => data.value === blogData?.category?._id),
         bannerImg: blogData?.bannerImg,
-        keywords:blogData?.keywords.map((item)=>item),
+        keywords:blogData?.keywords?.map((item)=>item),
         slug: blogData?.slug,
       });
       setDescription(blogData?.description);

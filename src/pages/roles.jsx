@@ -42,7 +42,7 @@ export default function Roles() {
 
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={2}>
-      {hasPermission('role.edit') && (
+      {hasPermission('roles.edit') && (
         <ModalContainer
           lg
           title="Edit Role"
@@ -56,7 +56,7 @@ export default function Roles() {
           content={({ onClose }) => <RolesForm onClose={onClose} role={_} />}
         />
       )}
-      {hasPermission('role.delete') && (
+      {hasPermission('roles.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"

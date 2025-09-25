@@ -46,7 +46,7 @@ export default function Admins() {
 
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={4}>
-      {hasPermission('admin.edit') && (
+      {hasPermission('admins.edit') && (
         <ModalContainer
           lg
           title="Edit Admin "
@@ -61,7 +61,7 @@ export default function Admins() {
         />
       )}
 
-      {hasPermission('admin.menu') && (
+      {hasPermission('admins.menu') && (
         <Tooltip title="More" type="dark">
           <MenuButton icon={<span className="material-icons-outlined">more_vert</span>}>
             {hasPermission('admin.update-password') && (
@@ -80,7 +80,7 @@ export default function Admins() {
         </Tooltip>
       )}
 
-      {hasPermission('admin.delete') && (
+      {hasPermission('admins.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"

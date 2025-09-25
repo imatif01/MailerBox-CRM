@@ -68,7 +68,7 @@ const roleService = {
   },
 
   async createRole(payload) {
-    let res = await Fetch.post(`${this._url}/create-role`, payload);
+    let res = await Fetch.post(`${this._url}/role`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
