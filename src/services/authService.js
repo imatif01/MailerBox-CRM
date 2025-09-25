@@ -27,7 +27,7 @@ const authService = {
   },
 
   async removeUserJwt() {
-    let res = await Fetch.delete(`${this._url}/logout-admin`, {}, true);
+    let res = await Fetch.delete(`${this._url}/logout`, {}, true);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;

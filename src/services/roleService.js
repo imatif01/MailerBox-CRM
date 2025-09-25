@@ -44,7 +44,7 @@ const roleService = {
     getAll = false,
   }) {
     let res = await Fetch.get(
-      `${this._url}/get-all-roles?page=${page}&itemsPerPage=${pageSize}&searchText=${searchText}&filterRoles=${filterRoles}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}`,
+      `${this._url}/role?page=${page}&itemsPerPage=${pageSize}&searchText=${searchText}&filterRoles=${filterRoles}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}`,
     );
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();

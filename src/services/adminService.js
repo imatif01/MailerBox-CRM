@@ -50,7 +50,7 @@ const adminService = {
   },
 
   async addAdmin(values) {
-    let res = await Fetch.post(`${this._url}/create-admin`, values);
+    let res = await Fetch.post(`${this._url}/add-admin`, values);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;

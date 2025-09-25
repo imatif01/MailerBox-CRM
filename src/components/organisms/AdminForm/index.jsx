@@ -16,7 +16,7 @@ function AdminForm({ user, passwordOnly, onClose = () => {} }) {
   const [loading, setLoading] = useState(false);
   const { refetch } = useContext(AuthContext);
   const { roles_data } = roleService.GetRoles({ getAll: true });
-  const roles = useMemo(() => roles_data.roles.map(({ id, type }) => ({ value: id, label: type })), [roles_data]);
+  const roles = useMemo(() => roles_data.roles.map(({ _id, type }) => ({ value: _id, label: type })), [roles_data]);
 
   useEffect(() => {
     if (user && !passwordOnly) {
@@ -29,7 +29,6 @@ function AdminForm({ user, passwordOnly, onClose = () => {} }) {
       });
     }
   }, [roles_data, user, passwordOnly, roles]);
-
   const onSubmit = async data => {
     try {
       setLoading(true);
@@ -38,7 +37,7 @@ function AdminForm({ user, passwordOnly, onClose = () => {} }) {
           fullName: data.fullName,
           email: data.email,
           password: data.password,
-          role: data.roles.map(({ value }) => value),
+          roles: data.roles.map(({ value }) => value),
         });
       } else if (user && passwordOnly) {
         await adminService.updateAdmin(user.id, {
@@ -49,7 +48,7 @@ function AdminForm({ user, passwordOnly, onClose = () => {} }) {
           fullName: data.fullName,
           email: data.email,
           password: data.password,
-          role: data.roles.map(({ label }) => label),
+          roles: data.roles.map(({ value }) => value),
         });
       }
       refetch();

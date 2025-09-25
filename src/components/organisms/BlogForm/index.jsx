@@ -40,7 +40,6 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
   }, [authors_data]);
 
   // const languageOptions = [{ label: 'English', value: 'en' }];
-
   const editorRef = useRef(null);
   useEffect(() => {
     if (editorRef.current && blogData?.description) {
@@ -56,6 +55,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
         // authorId: authorsOpts?.find(data => data.value === blogData?.author?.id),
         category: categoryOpts?.find(data => data.value === blogData?.category?._id),
         bannerImg: blogData?.bannerImg,
+        keywords:blogData?.keywords.map((item)=>item),
         slug: blogData?.slug,
       });
       setDescription(blogData?.description);
@@ -74,11 +74,11 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
     const postData = {
       category: data?.category?.value,
       bannerImg: data?.bannerImg,
-
       title: data?.title,
       description: desc,
       metaTitle: data?.metaTitle,
       metaDescription: data?.metaDescription,
+      keywords:data?.keywords,
       slug: data?.slug,
     };
 
@@ -226,6 +226,18 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
                 pattern: /^.{5,}$/,
                 message: 'Length should be atleast 5',
               },
+            ]}>
+            <Field />
+          </Form.Item>
+                  <Form.Item
+            sm
+            type="text"
+            label="keywords"
+            name="keywords"
+            placeholder="Keywords"
+            rules={[
+              { required: true, message: 'Please enter post keywords' },
+             
             ]}>
             <Field />
           </Form.Item>
