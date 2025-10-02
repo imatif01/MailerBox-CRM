@@ -103,6 +103,31 @@
     "filtersData": {}
   },
   {
+    "key": "products",
+    "filters": ["text", "date", "filterCategory"],
+    "filtersData": {
+      "filterCategory": {
+        "options": [
+          {
+            "": "All"
+          }
+        ],
+        "isDynamic": true,
+        "call": "blogCategoryService.categoryFiltersOptions",
+        "params": {
+          "getAll": true
+        },
+        "returnKey": "options",
+        "label": "Category",
+        "icon": "filter_alt"
+      }
+    }
+  },
+    {
+    "key": "create-product-category",
+    "filters": ["text", "date"]
+  },
+  {
     "key": "blogs",
     "filters": ["text", "date", "filterCategory"],
     "filtersData": {

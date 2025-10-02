@@ -28,6 +28,8 @@ import topNavData from 'nav.json';
 import { LoadingContext } from 'context/loadingContext';
 import TestimonialForm from 'components/organisms/TestimonialForm';
 import ToasterForm from 'components/organisms/ToasterForm';
+import CategoryProductCategory from 'components/organisms/Product/CreateProductCategory';
+import CreateProduct from 'components/organisms/Product/CreateProduct';
 
 const FiltersHolder = styled.div`
   gap: 20px;
@@ -365,6 +367,38 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                 />
               )}
 
+              {buttons.includes('create-product') && hasPermission('products.create') && (
+                <ModalContainer
+                  lg
+                  title="Create Product"
+                  btnComponent={({ onClick }) => (
+                    <Button
+                      type="outline"
+                      onClick={onClick}
+                      iconMobile
+                      prefix={<i className="material-icons-outlined">add</i>}>
+                      <span className="text">Create Product</span>
+                    </Button>
+                  )}
+                  content={({ onClose }) => <CreateProduct onClose={onClose} />}
+                />
+              )}
+               {buttons.includes('create-product-category') && hasPermission('product-category.create') && (
+                <ModalContainer
+                  lg
+                  title="Create Category"
+                  btnComponent={({ onClick }) => (
+                    <Button
+                      type="outline"
+                      onClick={onClick}
+                      iconMobile
+                      prefix={<i className="material-icons-outlined">add</i>}>
+                      <span className="text">Create Category</span>
+                    </Button>
+                  )}
+                  content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}
+                />
+              )}
               {buttons.includes('create-blog') && hasPermission('blogs.cerate') && (
                 <ModalContainer
                   lg

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const UploadFileWrapper = styled.div`
   display: flex;
@@ -11,6 +11,10 @@ export const UploadFileWrapper = styled.div`
   width: 100%;
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
   transition: border-color var(--animation-speed) ease-in-out;
+
+  &.after-drop {
+    padding: 10px;
+  }
 
   h4 {
     margin: 5px;
@@ -37,6 +41,34 @@ export const SelectedFiles = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
+
+  ${({ $small }) =>
+    $small &&
+    css`
+      height: auto;
+      padding: 0 !important;
+
+      .files-holder {
+        display: block !important;
+        padding: 0 !important;
+        border: none !important;
+        margin: 0 !important;
+      }
+      .files {
+        display: block !important;
+        margin: 0 0 10px;
+      }
+
+      img {
+        width: 100%;
+        height: 120px;
+        margin: 0 0 5px;
+      }
+
+      .delete-btn {
+        margin: 0 auto;
+      }
+    `}
 
   .files-holder {
     width: 100%;

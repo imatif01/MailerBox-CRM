@@ -39,6 +39,29 @@
   },
 
    {
+    "name": "Products",
+    "file": "products",
+    "navigations": true,
+    "live": true,
+    "buttons": [
+      "create-product"
+    ],
+    "icon": "edit_note",
+    "subNav": [
+      {
+        "name": "categories",
+        "file": "create-product-category",
+        "navigations": true,
+        "live": true,
+        "buttons": [
+          "create-product-category"
+        ],
+        "icon": "category"
+      }
+     
+    ]
+  },
+   {
     "name": "Blogs",
     "file": "blogs",
     "navigations": true,

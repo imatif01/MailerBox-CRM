@@ -45,7 +45,7 @@ function RolesForm({ role, onClose = () => {} }) {
     try {
       setLoading(true);
       if (role) {
-        await roleService.updateRole(role.id, {
+        await roleService.updateRole(role?._id, {
           type: data.type,
           description: data.description,
           permissions: state.permissions,

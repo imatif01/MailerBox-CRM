@@ -19,6 +19,7 @@ const UploadFile = ({
   onChange,
   fileSize = 15,
   displayFile,
+  small,
   ...props
 }) => {
   const [originalFiles, setOriginalFiles] = useState([]);
@@ -185,7 +186,8 @@ const UploadFile = ({
         <div className="preview-img">{selectedFile && <img src={selectedFile.preview} alt="preview" />}</div>
       </Modal>
 
-      <UploadFileWrapper $disabled={selectedFiles.length >= maxFiles} $invalid={invalid || error}>
+      <UploadFileWrapper className={selectedFiles.length > 0 ? 'after-drop' : ''}  $disabled={selectedFiles.length >= maxFiles} $invalid={invalid || error}>
+         {selectedFiles.length < maxFiles && (
         <Dropzone
           style={{
             border: '1px solid red',
@@ -214,9 +216,10 @@ const UploadFile = ({
             </div>
           )}
         </Dropzone>
+         )}
 
         {selectedFiles.length > 0 && (
-          <SelectedFiles>
+          <SelectedFiles $small={small}>
             <DnDProvider items={selectedFiles} onDragEnd={handleDragEnd}>
               {selectedFiles.map(file => (
                 <SortableFileItem id={file?.preview} key={file.preview} item={file}>
@@ -237,7 +240,7 @@ const UploadFile = ({
                       <strong>{file.formattedSize}</strong>
                     </p>
                   </div>
-                  <Button data-no-dnd="true" color="danger" onClick={() => handleDelete(file)}>
+                  <Button data-no-dnd="true" className="delete-btn" color="danger" onClick={() => handleDelete(file)}>
                     Delete
                   </Button>
                 </SortableFileItem>

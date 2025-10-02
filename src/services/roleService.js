@@ -78,7 +78,7 @@ const roleService = {
   },
 
   async updateRole(id, payload) {
-    let res = await Fetch.put(`${this._url}/update-role/${id}`, payload);
+    let res = await Fetch.put(`${this._url}/role/${id}`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
