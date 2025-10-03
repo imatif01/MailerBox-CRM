@@ -132,20 +132,20 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
     return true;
   };
 
-const optionss =[
+  const optionss = [
     {
-        label:"A",
-        value:"A"
+      label: 'A',
+      value: 'A',
     },
     {
-        label:"B",
-        value:"B"
+      label: 'B',
+      value: 'B',
     },
     {
-        label:"C",
-        value:"C"
+      label: 'C',
+      value: 'C',
     },
-]
+  ];
 
   return (
     <StyledProduct>
@@ -176,7 +176,7 @@ const optionss =[
             ]}>
             <Field />
           </Form.Item>
-            <Form.Item
+          <Form.Item
             type="text"
             label="SKU"
             maxLength={10}
@@ -212,8 +212,8 @@ const optionss =[
             // options={categoryOpts}
             options={optionss}
             isSearchable
-            name="material"
-            label="Material"
+            name="industry"
+            label="Industry"
             placeholder="Select material"
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
@@ -246,7 +246,7 @@ const optionss =[
             ]}>
             <Select />
           </Form.Item>
-          
+
           <Form.Item
             sm
             type="text"
@@ -269,7 +269,7 @@ const optionss =[
           <Form.Item
             sm
             type="text"
-            label="Metadescription"
+            label="Meta Description"
             name="metaDescription"
             placeholder="Metadescription"
             rules={[
@@ -294,9 +294,8 @@ const optionss =[
             rules={[{ required: true, message: 'Please enter post keywords' }]}>
             <Field />
           </Form.Item>
-        
         </Grid>
-          <div className='product-description'>
+        <div className="product-description">
           <Form.Item
             sm
             type="textarea"
@@ -306,39 +305,228 @@ const optionss =[
             rules={[{ required: true, message: 'Please enter sku' }]}>
             <Field />
           </Form.Item>
-                </div>
-        <Form.Item
-          label="Feature Image"
-          name="featureImg"
-          placeholder="Select Banner Image"
-          displayFile={blogData?.bannerImg || null}
-          type="chooseFile"
-          rules={[{ required: true, message: 'Select Banner Image' }]}>
-          <Field />
-        </Form.Item>
+        </div>
+        <div className="upload-field-holder feature">
+          <Form.Item
+            label="Feature Image"
+            name="featureImg"
+            placeholder="Select Banner Image"
+            displayFile={blogData?.bannerImg || null}
+            type="chooseFile"
+            noMargin
+            rules={[{ required: true, message: 'Select Banner Image' }]}>
+            <Field />
+          </Form.Item>
+
+          <Form.Item
+            name="alt"
+            type="text"
+            placeholder="Alt"
+            sm
+            noMargin
+            rules={[{ required: true, message: 'Enter Alt' }]}>
+            <Field />
+          </Form.Item>
+        </div>
 
         <div className="product-gallery-images">
           <div className="head">
             <span className="label">Gallery Images</span>
-            <button className="add-more" type='button' onClick={addGalleryField}>
+            <button className="add-more" type="button" onClick={addGalleryField}>
               Add more <i className="material-icons-outlined">add</i>
             </button>
           </div>
-          <Grid xs={1} lg={3} colGap={10}>
+          <Grid xs={1} lg={3} colGap={10} rowGap={10}>
             {galleryFields.map((field, index) => (
-              <Form.Item
-                key={field.name}
-                name={field.name}
-                type="chooseFile"
-                small
-                rules={[{ required: index < 3, message: `Select ${field.label}` }]} // only first 3 required
-              >
-                <Field />
-              </Form.Item>
+              <div className="upload-field-holder">
+                <Form.Item
+                  key={field.name}
+                  name={field.name}
+                  type="chooseFile"
+                  small
+                  rules={[{ required: index < 3, message: `Select ${field.label}` }]}>
+                  <Field />
+                </Form.Item>
+                <Form.Item
+                  name="alt"
+                  type="text"
+                  placeholder="Alt"
+                  sm
+                  rules={[{ required: true, message: 'Enter Alt' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
             ))}
           </Grid>
         </div>
-
+        <div className="feature-detail-holder">
+          <span className="label">Feature Details</span>
+          <span className="label">First</span>
+          <Grid xs={1} lg={2} colGap={10}>
+            <div>
+              <Form.Item label="Title" name="title" type="text" sm rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="Descripion"
+                  name="feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <Form.Item
+                label="First Feauture Title"
+                name="first_feature_title"
+                type="text"
+                sm
+                rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="First Feaure Descripion"
+                  name="first_feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <Form.Item
+                label="Second Feauture Title"
+                name="second_feature_title"
+                type="text"
+                sm
+                rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="Second Feaure Descripion"
+                  name="second_feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+          </Grid>
+          <span className="label">Second</span>
+          <Grid xs={1} lg={2} colGap={10}>
+            <div>
+              <Form.Item label="Title" name="title" type="text" sm rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="Descripion"
+                  name="feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <Form.Item
+                label="First Feauture Title"
+                name="first_feature_title"
+                type="text"
+                sm
+                rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="First Feaure Descripion"
+                  name="first_feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <Form.Item
+                label="Second Feauture Title"
+                name="second_feature_title"
+                type="text"
+                sm
+                rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="Second Feaure Descripion"
+                  name="second_feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+          </Grid>
+          <span className="label">Third</span>
+          <Grid xs={1} lg={2} colGap={10}>
+            <div>
+              <Form.Item label="Title" name="title" type="text" sm rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="Descripion"
+                  name="feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <Form.Item
+                label="First Feauture Title"
+                name="first_feature_title"
+                type="text"
+                sm
+                rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="First Feaure Descripion"
+                  name="first_feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <Form.Item
+                label="Second Feauture Title"
+                name="second_feature_title"
+                type="text"
+                sm
+                rules={[{ required: true, message: 'Enter title' }]}>
+                <Field />
+              </Form.Item>
+              <div className="product-description">
+                <Form.Item
+                  label="Second Feaure Descripion"
+                  name="second_feature_descrption"
+                  type="textarea"
+                  rules={[{ required: true, message: 'Enter title' }]}>
+                  <Field />
+                </Form.Item>
+              </div>
+            </div>
+          </Grid>
+        </div>
         {isEdit && (
           <Form.Item
             sm

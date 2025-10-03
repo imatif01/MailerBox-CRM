@@ -16,6 +16,10 @@ export const UploadFileWrapper = styled.div`
     padding: 10px;
   }
 
+  .drop-text {
+    margin: ${({ $small }) => ($small ? '0' : '0 0 30px')};
+  }
+
   h4 {
     margin: 5px;
   }

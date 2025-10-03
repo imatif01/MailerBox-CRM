@@ -6,9 +6,10 @@ import Button from 'components/atoms/Button';
 import { UploadFileWrapper, SelectedFiles } from './dropzone.styles';
 import Toast from 'components/molecules/Toast';
 import Modal from 'components/molecules/Modal';
-
 import DnDProvider from 'components/organisms/DragDND/DnDProvider';
 import SortableFileItem from 'components/organisms/DragDND/sortableItem';
+import Form, { useForm } from 'components/molecules/Form';
+import Field from 'components/molecules/Field';
 
 const UploadFile = ({
   invalid,
@@ -22,6 +23,7 @@ const UploadFile = ({
   small,
   ...props
 }) => {
+  const [form] = useForm();
   const [originalFiles, setOriginalFiles] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewModal, setPreviewModal] = useState(false);
@@ -186,37 +188,41 @@ const UploadFile = ({
         <div className="preview-img">{selectedFile && <img src={selectedFile.preview} alt="preview" />}</div>
       </Modal>
 
-      <UploadFileWrapper className={selectedFiles.length > 0 ? 'after-drop' : ''}  $disabled={selectedFiles.length >= maxFiles} $invalid={invalid || error}>
-         {selectedFiles.length < maxFiles && (
-        <Dropzone
-          style={{
-            border: '1px solid red',
-          }}
-          disabled={selectedFiles.length >= maxFiles}
-          maxFiles={maxFiles}
-          accept={accept}
-          file
-          multiple={multiple}
-          onDrop={acceptedFiles => handleChange(acceptedFiles)}
-          {...props}>
-          {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps()} style={{ textAlign: 'center', margin: ' 0 0 30px' }}>
-              <div>
-                <div style={{ marginBottom: '5px' }}>
-                  <i className="icon material-icons-outlined">cloud_upload</i>
+      <UploadFileWrapper
+        className={selectedFiles.length > 0 ? 'after-drop' : ''}
+        $disabled={selectedFiles.length >= maxFiles}
+        $small={small}
+        $invalid={invalid || error}>
+        {selectedFiles.length < maxFiles && (
+          <Dropzone
+            style={{
+              border: '1px solid red',
+            }}
+            disabled={selectedFiles.length >= maxFiles}
+            maxFiles={maxFiles}
+            accept={accept}
+            file
+            multiple={multiple}
+            onDrop={acceptedFiles => handleChange(acceptedFiles)}
+            {...props}>
+            {({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()} className="drop-text">
+                <div>
+                  <div style={{ marginBottom: '5px' }}>
+                    <i className="icon material-icons-outlined">cloud_upload</i>
+                  </div>
+                  <h4>Drop {multiple ? 'files' : 'file'} here or click to upload.</h4>
+                  <p style={{ fontSize: '16px' }}>
+                    File must be in {getExtensions()} format.
+                    {multiple && !!maxFiles && <span> You can upload up to {maxFiles} files.</span>}
+                  </p>
                 </div>
-                <h4>Drop {multiple ? 'files' : 'file'} here or click to upload.</h4>
-                <p style={{ fontSize: '16px' }}>
-                  File must be in {getExtensions()} format.
-                  {multiple && !!maxFiles && <span> You can upload up to {maxFiles} files.</span>}
-                </p>
-              </div>
 
-              <input {...getInputProps()} />
-            </div>
-          )}
-        </Dropzone>
-         )}
+                <input {...getInputProps()} />
+              </div>
+            )}
+          </Dropzone>
+        )}
 
         {selectedFiles.length > 0 && (
           <SelectedFiles $small={small}>

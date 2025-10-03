@@ -27,9 +27,13 @@ export default function Product() {
     filterText: '',
     filterCategory: '',
   });
-  const {refetch, hasPermission } = useContext(AuthContext);
+  const { refetch, hasPermission } = useContext(AuthContext);
 
-  const { blogs_data, blogs_loading } = blogService.GetBlogs(searchQuery, refetch);
+  // const { blogs_data, blogs_loading } = blogService.GetBlogs(searchQuery, refetch);
+
+  const blogs_data = [];
+  const blogs_loading = false;
+
   const onDeleteBlog = async id => {
     try {
       await blogService.deleteBlog(id);

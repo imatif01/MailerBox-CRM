@@ -367,7 +367,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                 />
               )}
 
-              {buttons.includes('create-product') && hasPermission('products.create') && (
+              {buttons.includes('create-product') && hasPermission('product.create') && (
                 <ModalContainer
                   lg
                   title="Create Product"
@@ -383,7 +383,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                   content={({ onClose }) => <CreateProduct onClose={onClose} />}
                 />
               )}
-               {buttons.includes('create-product-category') && hasPermission('product-category.create') && (
+              {buttons.includes('product-category') && hasPermission('product-category.create') && (
                 <ModalContainer
                   lg
                   title="Create Category"
@@ -394,6 +394,38 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                       iconMobile
                       prefix={<i className="material-icons-outlined">add</i>}>
                       <span className="text">Create Category</span>
+                    </Button>
+                  )}
+                  content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}
+                />
+              )}
+              {buttons.includes('product-industry') && hasPermission('product-industry.create') && (
+                <ModalContainer
+                  lg
+                  title="Create Industry"
+                  btnComponent={({ onClick }) => (
+                    <Button
+                      type="outline"
+                      onClick={onClick}
+                      iconMobile
+                      prefix={<i className="material-icons-outlined">add</i>}>
+                      <span className="text">Create Industry</span>
+                    </Button>
+                  )}
+                  content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}
+                />
+              )}
+              {buttons.includes('product-styles') && hasPermission('product-style.create') && (
+                <ModalContainer
+                  lg
+                  title="Create Style"
+                  btnComponent={({ onClick }) => (
+                    <Button
+                      type="outline"
+                      onClick={onClick}
+                      iconMobile
+                      prefix={<i className="material-icons-outlined">add</i>}>
+                      <span className="text">Create Style</span>
                     </Button>
                   )}
                   content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}

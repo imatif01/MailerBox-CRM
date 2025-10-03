@@ -123,8 +123,16 @@
       }
     }
   },
-    {
-    "key": "create-product-category",
+  {
+    "key": "product-category",
+    "filters": ["text", "date"]
+  },
+  {
+    "key": "product-industry",
+    "filters": ["text", "date"]
+  },
+  {
+    "key": "product-styles",
     "filters": ["text", "date"]
   },
   {

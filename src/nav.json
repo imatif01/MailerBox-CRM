@@ -12,9 +12,7 @@
     "file": "permissions",
     "navigations": true,
     "live": true,
-    "buttons": [
-      "create-permission"
-    ],
+    "buttons": ["create-permission"],
     "icon": "lock"
   },
   {
@@ -22,9 +20,7 @@
     "file": "roles",
     "navigations": true,
     "live": true,
-    "buttons": [
-      "create-role"
-    ],
+    "buttons": ["create-role"],
     "icon": "build"
   },
   {
@@ -32,43 +28,50 @@
     "file": "admins",
     "navigations": true,
     "live": true,
-    "buttons": [
-      "create-admin"
-    ],
+    "buttons": ["create-admin"],
     "icon": "admin_panel_settings"
   },
 
-   {
+  {
     "name": "Products",
     "file": "products",
     "navigations": true,
     "live": true,
-    "buttons": [
-      "create-product"
-    ],
+    "buttons": ["create-product"],
     "icon": "edit_note",
     "subNav": [
       {
         "name": "categories",
-        "file": "create-product-category",
+        "file": "product-category",
         "navigations": true,
         "live": true,
-        "buttons": [
-          "create-product-category"
-        ],
+        "buttons": ["product-category"],
+        "icon": "category"
+      },
+      {
+        "name": "industries",
+        "file": "product-industry",
+        "navigations": true,
+        "live": true,
+        "buttons": ["product-industry"],
+        "icon": "category"
+      },
+      {
+        "name": "styles",
+        "file": "product-styles",
+        "navigations": true,
+        "live": true,
+        "buttons": ["product-styles"],
         "icon": "category"
       }
-     
     ]
   },
-   {
+  {
     "name": "Blogs",
     "file": "blogs",
     "navigations": true,
     "live": true,
-    "buttons": [
-      "create-blog"
-    ],
+    "buttons": ["create-blog"],
     "icon": "edit_note",
     "subNav": [
       {
@@ -76,13 +79,9 @@
         "file": "categories",
         "navigations": true,
         "live": true,
-        "buttons": [
-          "create-category"
-        ],
+        "buttons": ["create-category"],
         "icon": "category"
       }
-     
     ]
   }
 ]
-
