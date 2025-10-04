@@ -29,10 +29,7 @@ export default function Product() {
   });
   const { refetch, hasPermission } = useContext(AuthContext);
 
-  // const { blogs_data, blogs_loading } = blogService.GetBlogs(searchQuery, refetch);
-
-  const blogs_data = [];
-  const blogs_loading = false;
+  const { blogs_data, blogs_loading } = blogService.GetBlogs(searchQuery, refetch);
 
   const onDeleteBlog = async id => {
     try {
@@ -133,7 +130,7 @@ export default function Product() {
     }),
     [blogs_data],
   );
-  const columnNames = [`Created at`, `Title`, `Author`, `Category`, ``];
+  const columnNames = [`Created at`, `Title`, `Category`, ``];
 
   return (
     <TableLayout

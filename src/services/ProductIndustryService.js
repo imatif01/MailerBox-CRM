@@ -8,49 +8,47 @@ const STATUS = {
   ERROR: 'error',
 };
 
-const permissionService = {
-  _url: `${process.env.REACT_APP_PERMISSION_URL}`,
+const productIndustryService = {
+  _url: `${process.env.REACT_APP_PRODUCT_URL}`,
 
-  GetPermissions(searchQuery, refetch) {
-    const [permissions, setPermissions] = useState({
+  GetProductIndustries(searchQuery, refetch) {
+    const [industries, setIndustries] = useState({
       totalItems: 0,
-      permissions: [],
+      industries: [],
     });
     const { cancellablePromise } = useCancellablePromise();
     const [status, setStatus] = useState(STATUS.LOADING);
     useEffect(() => {
       setStatus(STATUS.LOADING);
-      cancellablePromise(this.getPermissions(searchQuery))
+      cancellablePromise(this.getProductIndustries(searchQuery))
         .then(res => {
-          setPermissions(() => res);
+          setIndustries(() => res);
           setStatus(STATUS.SUCCESS);
         })
         .catch(() => setStatus(STATUS.ERROR));
     }, [JSON.stringify(searchQuery), refetch]);
     return {
-      permissions_loading: status === STATUS.LOADING,
-      permissions_error: status === STATUS.ERROR ? status : '',
-      permissions_data: permissions,
+      product_industries_loading: status === STATUS.LOADING,
+      product_industries_error: status === STATUS.ERROR ? status : '',
+      product_industries_data: industries,
     };
   },
 
-  async getPermissions({
+  async getProductIndustries({
     page = 1,
     pageSize = 10,
     searchText = '',
     startDate = '',
     endDate = '',
     getAll = false,
-    parentOnly = false,
-    filterPermission = '',
   }) {
     let res = await Fetch.get(
-      `${this._url}/get-all-permission?page=${page}&itemsPerPage=${pageSize}&searchText=${searchText}&filterText=${filterPermission}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}&parentOnly=${parentOnly}`,
+      `${this._url}/get-all-product-industries?page=${page}&itemsPerPage=${pageSize}&searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&getAll=${getAll}`,
     );
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return {
-        permissions: res?.items,
+        industries: res?.items,
         totalItems: res?.totalItems,
       };
     }
@@ -58,8 +56,8 @@ const permissionService = {
     throw new Error(message ?? 'Something went wrong');
   },
 
-  async createPermission(payload) {
-    let res = await Fetch.post(`${this._url}/permission`, payload);
+  async createIndustry(payload) {
+    let res = await Fetch.post(`${this._url}/create-product-industry`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -68,8 +66,8 @@ const permissionService = {
     throw new Error(message ?? 'Something went wrong');
   },
 
-  async updatePermission(id, payload) {
-    let res = await Fetch.put(`${this._url}/permission/${id}`, payload);
+  async updateIndustry(payload) {
+    let res = await Fetch.put(`${this._url}/edit-product-industry`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -78,8 +76,8 @@ const permissionService = {
     throw new Error(message ?? 'Something went wrong');
   },
 
-  async deletePermission(id) {
-    let res = await Fetch.delete(`${this._url}/permission/${id}`);
+  async deleteIndustry(id, payload) {
+    let res = await Fetch.delete(`${this._url}/delete-product-industry/${id}`, payload);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;
@@ -88,19 +86,14 @@ const permissionService = {
     throw new Error(message ?? 'Something went wrong');
   },
 
-  /**
-   *
-   * @param {Dynamic calling} param0
-   * @returns
-   */
-  async getPermissionsOptions({ parentOnly = false }) {
-    let res = await Fetch.get(`${this._url}/get-all-permission?parentOnly=${parentOnly}`);
+  async industryFiltersOptions({ getAll = true }) {
+    let res = await Fetch.get(`${this._url}/get-all-product-industries?getAll=${getAll}`);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return {
-        permissionStatus: res?.data?.items.map(({ can }) => ({
-          label: can.split('.')[0],
-          value: can.split('.')[0],
+        options: res?.items.map(({ categoryTitle, id }) => ({
+          label: categoryTitle,
+          value: id,
         })),
       };
     }
@@ -108,4 +101,5 @@ const permissionService = {
     throw new Error(message ?? 'Something went wrong');
   },
 };
-export default permissionService;
+
+export default productIndustryService;

@@ -11,6 +11,8 @@ import Button from 'components/atoms/Button';
 import Toast from 'components/molecules/Toast';
 import CategoryForm from 'components/organisms/CategoryForm';
 import categoryService from 'services/blogCategoryService';
+import productStyleService from 'services/ProductStylesService';
+import ProductStyles from 'components/organisms/Product/ProductStyles';
 
 export default function ProductStylesPage() {
   const [searchQuery, setSearchQuery] = useState({
@@ -22,16 +24,14 @@ export default function ProductStylesPage() {
   });
   const { refetch, hasPermission } = useContext(AuthContext);
 
-  // const { category_data, category_loading } = categoryService.GetCategories(searchQuery, refetch);
-  const category_data = [];
-  const category_loading = false;
+  const { product_styles_data, product_styles_loading } = productStyleService.GetProductStyles(searchQuery, refetch);
 
   const onDeleteCategory = async id => {
     try {
-      await categoryService.deleteCategory(id);
+      await productStyleService.deleteStyle(id);
       refetch();
       Toast({
-        message: 'Category deleted successfully',
+        message: 'Style deleted successfully',
         type: 'success',
       });
     } catch (ex) {
@@ -43,10 +43,10 @@ export default function ProductStylesPage() {
   };
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={2}>
-      {hasPermission('categories.update') && (
+      {hasPermission('product-style.edit') && (
         <ModalContainer
           lg
-          title="Edit Category"
+          title="Edit Style"
           btnComponent={({ onClick }) => (
             <Tooltip title="Edit" type="dark">
               <Button unStyled className="edit-btn" onClick={onClick}>
@@ -54,10 +54,10 @@ export default function ProductStylesPage() {
               </Button>
             </Tooltip>
           )}
-          content={({ onClose }) => <CategoryForm onClose={onClose} category={_} />}
+          content={({ onClose }) => <ProductStyles onClose={onClose} category={_} />}
         />
       )}
-      {hasPermission('categories.delete') && (
+      {hasPermission('product-style.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"
@@ -76,14 +76,14 @@ export default function ProductStylesPage() {
   );
   const { totalCount, category_rows } = useMemo(
     () => ({
-      category_rows: category_data?.categories?.map(_ => [
+      category_rows: product_styles_data?.styles?.map(_ => [
         format(new Date(_?.created_at), 'yyyy-MM-dd'),
         _.title,
         actionBtns(_),
       ]),
-      totalCount: category_data?.totalItems,
+      totalCount: product_styles_data?.totalItems,
     }),
-    [category_data],
+    [product_styles_data],
   );
   const columnNames = [`Created at`, `Title`, ``];
 
@@ -99,7 +99,13 @@ export default function ProductStylesPage() {
       currentPage={searchQuery.page}
       totalCount={totalCount}
       itemsPerPage={searchQuery.itemsPerPage}>
-      <Table width={1200} loading={category_loading} rowsData={category_rows} columnNames={columnNames} noPadding />
+      <Table
+        width={1200}
+        loading={product_styles_loading}
+        rowsData={category_rows}
+        columnNames={columnNames}
+        noPadding
+      />
     </TableLayout>
   );
 }

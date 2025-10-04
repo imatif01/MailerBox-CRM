@@ -15,6 +15,9 @@ import categoryService from 'services/blogCategoryService';
 import authorService from 'services/blogAuthorService';
 import { convertToFormData } from 'helpers/common';
 import { StyledProduct } from './Product.styles';
+import productCategoryService from 'services/productCategoryService';
+import productIndustryService from 'services/ProductIndustryService';
+import productStyleService from 'services/ProductStylesService';
 
 function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
   const [form] = useForm();
@@ -31,22 +34,30 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
 
   const [galleryFields, setGalleryFields] = useState(galleryImages);
 
-  const { category_data, category_loading } = categoryService.GetCategories({ getAll: true }, refetch);
-  const { authors_data } = authorService.GetAuthors({ getAll: true }, refetch);
+  const { product_categories_data } = productCategoryService.GetProductCategories({ getAll: true }, refetch);
+  const { product_industries_data } = productIndustryService.GetProductIndustries({ getAll: true }, refetch);
+  const { product_styles_data } = productStyleService.GetProductStyles({ getAll: true }, refetch);
 
   const categoryOpts = useMemo(() => {
-    return category_data?.categories.map(category => ({
-      label: category.title,
-      value: category._id,
+    return product_categories_data?.categories.map(category => ({
+      label: category?.title,
+      value: category?._id,
     }));
-  }, [category_data]);
+  }, [product_categories_data]);
 
-  const editorRef = useRef(null);
-  useEffect(() => {
-    if (editorRef.current && blogData?.description) {
-      editorRef.current.blogData?.description;
-    }
-  }, [description]);
+  const industryOpts = useMemo(() => {
+    return product_industries_data?.industries?.map(industry => ({
+      label: industry?.title,
+      value: industry?._id,
+    }));
+  }, [product_industries_data]);
+
+  const styleOpts = useMemo(() => {
+    return product_styles_data?.styles?.map(style => ({
+      label: style?.title,
+      value: style?._id,
+    }));
+  }, [product_industries_data]);
 
   useEffect(() => {
     if (isEdit) {
@@ -189,8 +200,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
           <Form.Item
             sm
             isMulti
-            // options={categoryOpts}
-            options={optionss}
+            options={categoryOpts}
             isSearchable
             name="category"
             label="Category"
@@ -209,8 +219,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
           <Form.Item
             sm
             isMulti
-            // options={categoryOpts}
-            options={optionss}
+            options={industryOpts}
             isSearchable
             name="industry"
             label="Industry"
@@ -229,8 +238,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
           <Form.Item
             sm
             isMulti
-            // options={categoryOpts}
-            options={optionss}
+            options={styleOpts}
             isSearchable
             name="Style"
             label="style"

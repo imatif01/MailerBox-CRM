@@ -7,8 +7,10 @@ import Field from 'components/molecules/Field';
 import Form, { useForm } from 'components/molecules/Form';
 import Toast from 'components/molecules/Toast';
 import categoryService from 'services/blogCategoryService';
+import productCategoryService from 'services/productCategoryService';
+import productIndustryService from 'services/ProductIndustryService';
 
-function CategoryProductCategory({ category, onClose = () => {} }) {
+function ProductIndustry({ category, onClose = () => {} }) {
   const [form] = useForm();
   const [loading, setLoading] = useState(false);
   const { refetch } = useContext(AuthContext);
@@ -20,19 +22,19 @@ function CategoryProductCategory({ category, onClose = () => {} }) {
       });
     }
   }, [category]);
-
   const onSubmit = async data => {
     try {
       setLoading(true);
       let res;
       if (category) {
-        // await categoryService.updateCategory(category._id, {
-        //   title: data?.title,
-        // });
+        res = await productIndustryService.updateIndustry({
+          id: category._id,
+          title: data?.title,
+        });
       } else {
-        // await categoryService.createCategory({
-        //   title: data?.title,
-        // });
+        res = await productIndustryService.createIndustry({
+          title: data?.title,
+        });
       }
       refetch();
       onClose();
@@ -84,4 +86,4 @@ function CategoryProductCategory({ category, onClose = () => {} }) {
   );
 }
 
-export default CategoryProductCategory;
+export default ProductIndustry;

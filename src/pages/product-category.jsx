@@ -10,7 +10,8 @@ import Tooltip from 'components/atoms/Tooltip';
 import Button from 'components/atoms/Button';
 import Toast from 'components/molecules/Toast';
 import CategoryForm from 'components/organisms/CategoryForm';
-import categoryService from 'services/blogCategoryService';
+import productCategoryService from 'services/productCategoryService';
+import ProductCategory from 'components/organisms/Product/ProductCategory';
 
 export default function ProductCategoryPage() {
   const [searchQuery, setSearchQuery] = useState({
@@ -22,13 +23,14 @@ export default function ProductCategoryPage() {
   });
   const { refetch, hasPermission } = useContext(AuthContext);
 
-  // const { category_data, category_loading } = categoryService.GetCategories(searchQuery, refetch);
-  const category_data=[]
-  const category_loading=false;
-
+  const { product_categories_data, product_categories_loading } = productCategoryService.GetProductCategories(
+    searchQuery,
+    refetch,
+  );
+  console.log(product_categories_data);
   const onDeleteCategory = async id => {
     try {
-      await categoryService.deleteCategory(id);
+      await productCategoryService.deleteCategory(id);
       refetch();
       Toast({
         message: 'Category deleted successfully',
@@ -41,9 +43,10 @@ export default function ProductCategoryPage() {
       });
     }
   };
+
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={2}>
-      {hasPermission('categories.update') && (
+      {hasPermission('product-category.edit') && (
         <ModalContainer
           lg
           title="Edit Category"
@@ -54,10 +57,10 @@ export default function ProductCategoryPage() {
               </Button>
             </Tooltip>
           )}
-          content={({ onClose }) => <CategoryForm onClose={onClose} category={_} />}
+          content={({ onClose }) => <ProductCategory onClose={onClose} category={_} />}
         />
       )}
-      {hasPermission('categories.delete') && (
+      {hasPermission('product-category.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"
@@ -76,14 +79,14 @@ export default function ProductCategoryPage() {
   );
   const { totalCount, category_rows } = useMemo(
     () => ({
-      category_rows: category_data?.categories?.map(_ => [
+      category_rows: product_categories_data?.categories?.map(_ => [
         format(new Date(_?.created_at), 'yyyy-MM-dd'),
         _.title,
         actionBtns(_),
       ]),
-      totalCount: category_data?.totalItems,
+      totalCount: product_categories_data?.totalItems,
     }),
-    [category_data],
+    [product_categories_data],
   );
   const columnNames = [`Created at`, `Title`, ``];
 
@@ -99,7 +102,13 @@ export default function ProductCategoryPage() {
       currentPage={searchQuery.page}
       totalCount={totalCount}
       itemsPerPage={searchQuery.itemsPerPage}>
-      <Table width={1200} loading={category_loading} rowsData={category_rows} columnNames={columnNames} noPadding />
+      <Table
+        width={1200}
+        loading={product_categories_loading}
+        rowsData={category_rows}
+        columnNames={columnNames}
+        noPadding
+      />
     </TableLayout>
   );
 }

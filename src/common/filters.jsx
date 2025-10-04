@@ -28,8 +28,10 @@ import topNavData from 'nav.json';
 import { LoadingContext } from 'context/loadingContext';
 import TestimonialForm from 'components/organisms/TestimonialForm';
 import ToasterForm from 'components/organisms/ToasterForm';
-import CategoryProductCategory from 'components/organisms/Product/CreateProductCategory';
+import ProductCategory from 'components/organisms/Product/ProductCategory';
 import CreateProduct from 'components/organisms/Product/CreateProduct';
+import ProductIndustry from 'components/organisms/Product/ProductIndusry';
+import ProductStyles from 'components/organisms/Product/ProductStyles';
 
 const FiltersHolder = styled.div`
   gap: 20px;
@@ -396,7 +398,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                       <span className="text">Create Category</span>
                     </Button>
                   )}
-                  content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}
+                  content={({ onClose }) => <ProductCategory onClose={onClose} />}
                 />
               )}
               {buttons.includes('product-industry') && hasPermission('product-industry.create') && (
@@ -412,7 +414,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                       <span className="text">Create Industry</span>
                     </Button>
                   )}
-                  content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}
+                  content={({ onClose }) => <ProductIndustry onClose={onClose} />}
                 />
               )}
               {buttons.includes('product-styles') && hasPermission('product-style.create') && (
@@ -428,7 +430,7 @@ function Filters({ onChangeFilters, customFilterKey = '', extraFilters }) {
                       <span className="text">Create Style</span>
                     </Button>
                   )}
-                  content={({ onClose }) => <CategoryProductCategory onClose={onClose} />}
+                  content={({ onClose }) => <ProductStyles onClose={onClose} />}
                 />
               )}
               {buttons.includes('create-blog') && hasPermission('blogs.cerate') && (
