@@ -16,6 +16,7 @@ import BlogForm from 'components/organisms/BlogForm';
 import Toast from 'components/molecules/Toast';
 import BlogDetailModal from 'components/organisms/BlogDetailModal';
 import AddNewLanguageBlogForm from 'components/organisms/addNewBlogLanguage';
+import productService from 'services/ProductService';
 
 export default function Product() {
   const [searchQuery, setSearchQuery] = useState({
@@ -29,11 +30,11 @@ export default function Product() {
   });
   const { refetch, hasPermission } = useContext(AuthContext);
 
-  const { blogs_data, blogs_loading } = blogService.GetBlogs(searchQuery, refetch);
+  const { products_data, products_loading } = productService.GetAllProducts(searchQuery, refetch);
 
   const onDeleteBlog = async id => {
     try {
-      await blogService.deleteBlog(id);
+      await productService.deleteBlog(id);
       refetch();
       Toast({
         message: 'Post deleted successfully',
@@ -119,16 +120,16 @@ export default function Product() {
   );
   const { totalCount, blogs_rows } = useMemo(
     () => ({
-      blogs_rows: blogs_data?.blogs?.map(_ => [
+      blogs_rows: products_data?.products?.map(_ => [
         format(new Date(_.created_at), 'yyyy-MM-dd'),
         _?.title,
         _.author?.name,
         _.category?.title,
         actionBtns(_),
       ]),
-      totalCount: blogs_data.totalItems,
+      totalCount: products_data.totalItems,
     }),
-    [blogs_data],
+    [products_data],
   );
   const columnNames = [`Created at`, `Title`, `Category`, ``];
 
@@ -144,7 +145,7 @@ export default function Product() {
       currentPage={searchQuery.page}
       totalCount={totalCount}
       pageSize={searchQuery.pageSize}>
-      <Table width={1200} loading={blogs_loading} rowsData={blogs_rows} columnNames={columnNames} noPadding />
+      <Table width={1200} loading={products_loading} rowsData={blogs_rows} columnNames={columnNames} noPadding />
     </TableLayout>
   );
 }

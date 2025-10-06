@@ -55,7 +55,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
         // authorId: authorsOpts?.find(data => data.value === blogData?.author?.id),
         category: categoryOpts?.find(data => data.value === blogData?.category?._id),
         bannerImg: blogData?.bannerImg,
-        keywords:blogData?.keywords?.map((item)=>item),
+        keywords: blogData?.keywords?.map(item => item),
         slug: blogData?.slug,
       });
       setDescription(blogData?.description);
@@ -70,7 +70,6 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
 
     setError(null);
     setLoading(true);
-
     const postData = {
       category: data?.category?.value,
       bannerImg: data?.bannerImg,
@@ -78,7 +77,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
       description: desc,
       metaTitle: data?.metaTitle,
       metaDescription: data?.metaDescription,
-      keywords:data?.keywords,
+      keywords: data?.keywords,
       slug: data?.slug,
     };
 
@@ -229,16 +228,13 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
             ]}>
             <Field />
           </Form.Item>
-                  <Form.Item
+          <Form.Item
             sm
             type="text"
             label="keywords"
             name="keywords"
             placeholder="Keywords"
-            rules={[
-              { required: true, message: 'Please enter post keywords' },
-             
-            ]}>
+            rules={[{ required: true, message: 'Please enter post keywords' }]}>
             <Field />
           </Form.Item>
         </>
@@ -277,7 +273,7 @@ function BlogForm({ isEdit, blogData, onClose = () => {} }) {
           <span style={{ color: 'red' }}>* </span>
           Editor
         </div>
-         <Editor
+        <Editor
           onInit={(evt, editor) => {
             editorRef.current = editor;
           }}

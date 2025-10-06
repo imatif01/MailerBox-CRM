@@ -18,8 +18,9 @@ import { StyledProduct } from './Product.styles';
 import productCategoryService from 'services/productCategoryService';
 import productIndustryService from 'services/ProductIndustryService';
 import productStyleService from 'services/ProductStylesService';
+import productService from 'services/ProductService';
 
-function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
+function CreateProduct({ isEdit, productData, onClose = () => {} }) {
   const [form] = useForm();
   const [loading, setLoading] = useState(false);
   const { refetch } = useContext(AuthContext);
@@ -27,13 +28,12 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
   const [error, setError] = useState(null);
 
   const galleryImages = [
-    { name: 'gallery_img_one', label: 'First Gallery Image' },
-    { name: 'gallery_img_two', label: 'Second Gallery Image' },
-    { name: 'gallery_img_three', label: 'Third Gallery Image' },
+    { id: 1, name: 'gallery_img_1', label: 'Gallery Image 1', file: null, path: '', alt: '' },
+    { id: 2, name: 'gallery_img_2', label: 'Gallery Image 2', file: null, path: '', alt: '' },
+    { id: 3, name: 'gallery_img_3', label: 'Gallery Image 3', file: null, path: '', alt: '' },
   ];
 
   const [galleryFields, setGalleryFields] = useState(galleryImages);
-
   const { product_categories_data } = productCategoryService.GetProductCategories({ getAll: true }, refetch);
   const { product_industries_data } = productIndustryService.GetProductIndustries({ getAll: true }, refetch);
   const { product_styles_data } = productStyleService.GetProductStyles({ getAll: true }, refetch);
@@ -57,49 +57,97 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
       label: style?.title,
       value: style?._id,
     }));
-  }, [product_industries_data]);
+  }, [product_styles_data]);
 
   useEffect(() => {
     if (isEdit) {
       form.setFieldsValue({
-        title: blogData?.title,
-        metaTitle: blogData?.metaTitle,
-        metaDescription: blogData?.metaDescription,
-        category: categoryOpts?.find(data => data.value === blogData?.category?._id),
-        bannerImg: blogData?.bannerImg,
-        keywords: blogData?.keywords?.map(item => item),
-        slug: blogData?.slug,
+        title: productData?.title,
+        metaTitle: productData?.metaTitle,
+        metaDescription: productData?.metaDescription,
+        category: categoryOpts?.find(data => data.value === productData?.category?._id),
+        bannerImg: productData?.bannerImg,
+        keywords: productData?.keywords?.map(item => item),
+        slug: productData?.slug,
       });
-      setDescription(blogData?.description);
+      setDescription(productData?.description);
     }
-  }, [blogData, categoryOpts]);
+  }, [productData, categoryOpts]);
 
   const onSubmit = async data => {
     let desc = description || '';
-    if (editorRef?.current) {
-      desc = editorRef.current.getContent();
-    }
 
     setError(null);
     setLoading(true);
-
-    const postData = {
-      category: data?.category?.value,
-      bannerImg: data?.bannerImg,
+    console.log(data?.featureImg);
+    const productData = {
       title: data?.title,
-      description: desc,
+      sku: data?.sku,
+      categories: data?.category,
+      industries: data?.industry,
+      styles: data?.style,
       metaTitle: data?.metaTitle,
       metaDescription: data?.metaDescription,
       keywords: data?.keywords,
+      shortDescription: data?.shortDescription,
+      featureImage: data?.featureImg,
+      featureImageAlt: data?.featureAlt,
+      galleryImages: galleryFields?.map(i => i),
+      galleryImagesAlt: galleryFields?.map(i => i?.alt),
+      featureDetails: {
+        first: [
+          {
+            title: data?.first_row_title,
+            description: data?.first_row_feature_description,
+          },
+          {
+            firstFeatureTitle: data?.first_row_first_feature_title,
+            firstFeatureDescription: data?.first_row_first_feature_title,
+          },
+          {
+            secondFeatureTitle: data?.first_row_second_feature_title,
+            secondFeatureDescription: data?.first_row_second_feature_description,
+          },
+        ],
+        second: [
+          {
+            title: data?.second_row_title,
+            description: data?.second_row_feature_description,
+          },
+          {
+            firstFeatureTitle: data?.second_row_first_feature_title,
+            firstFeatureDescription: data?.second_row_first_feature_title,
+          },
+          {
+            secondFeatureTitle: data?.second_row_second_feature_title,
+            secondFeatureDescription: data?.second_row_second_feature_description,
+          },
+        ],
+        third: [
+          {
+            title: data?.third_row_feature_title,
+            description: data?.third_row_feature_description,
+          },
+          {
+            firstFeatureTitle: data?.third_row_first_feature_title,
+            firstFeatureDescription: data?.third_row_first_feature_title,
+          },
+          {
+            secondFeatureTitle: data?.third_row_second_feature_title,
+            secondFeatureDescription: data?.third_row_second_feature_description,
+          },
+        ],
+      },
       slug: data?.slug,
     };
+    console.log(productData);
 
     try {
       let res;
       if (isEdit) {
-        await blogService.updateBlog(blogData._id, convertToFormData(postData));
+        await productService.updateProduct(products_data?._id, convertToFormData(productData));
       } else {
-        res = await blogService.createBlog(convertToFormData(postData));
+        res = await productService.createProduct(convertToFormData(productData));
       }
       refetch();
       onClose();
@@ -117,46 +165,56 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
     }
   };
 
+  // const addGalleryField = () => {
+  //   const nextIndex = galleryFields.length + 1;
+  //   setGalleryFields(prev => [
+  //     ...prev,
+  //     { name: `gallery_img_${nextIndex}`, label: `Gallery Image ${nextIndex}`, alt: '' },
+  //   ]);
+  // };
+
   const addGalleryField = () => {
     const nextIndex = galleryFields.length + 1;
-    setGalleryFields(prev => [...prev, { name: `gallery_img_${nextIndex}`, label: `Gallery Image ${nextIndex}` }]);
+    setGalleryFields(prev => [
+      ...prev,
+      {
+        id: nextIndex,
+        name: `gallery_img_${nextIndex}`,
+        label: `Gallery Image ${nextIndex}`,
+        file: null,
+        path: '',
+        alt: '',
+      },
+    ]);
   };
 
-  const handleImageSizeLimit = (e, items, editor) => {
-    for (const element of items) {
-      if (element.type.indexOf('image') !== -1) {
-        let imageSize = element.getAsFile().size;
+  // const updateGalleryAlt = (index, value) => {
+  //   setGalleryFields(prev => {
+  //     const updated = [...prev];
+  //     updated[index].alt = value;
+  //     return updated;
+  //   });
+  // };
 
-        if (imageSize > 200 * 1024) {
-          e.preventDefault();
-
-          editor.notificationManager.open({
-            text: 'Image size exceeds 200 KB limit',
-            type: 'error',
-          });
-
-          return false;
-        }
-      }
-    }
-
-    return true;
+  const updateGalleryFile = (index, file, path) => {
+    setGalleryFields(prev => {
+      const updated = [...prev];
+      updated[index].file = file;
+      updated[index].path = path;
+      return updated;
+    });
+    form.setFieldsValue({
+      [galleryFields[index].name]: file,
+    });
   };
 
-  const optionss = [
-    {
-      label: 'A',
-      value: 'A',
-    },
-    {
-      label: 'B',
-      value: 'B',
-    },
-    {
-      label: 'C',
-      value: 'C',
-    },
-  ];
+  const updateGalleryAlt = (index, alt) => {
+    setGalleryFields(prev => {
+      const updated = [...prev];
+      updated[index].alt = alt;
+      return updated;
+    });
+  };
 
   return (
     <StyledProduct>
@@ -175,7 +233,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             name="title"
             placeholder="Post Title"
             rules={[
-              { required: true, message: 'Please enter post title' },
+              { required: false, message: 'Please enter post title' },
               {
                 pattern: /^[A-Z]/,
                 message: 'First character should be capital',
@@ -194,7 +252,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             name="sku"
             placeholder="sku"
             sm
-            rules={[{ required: true, message: 'Please enter sku' }]}>
+            rules={[{ required: false, message: 'Please enter sku' }]}>
             <Field />
           </Form.Item>
           <Form.Item
@@ -208,7 +266,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
             rules={[
-              { required: true, message: 'Select atleast one cateogry' },
+              { required: false, message: 'Select atleast one cateogry' },
               // {
               //   transform: value => !value?.length,
               //   message: 'Select at least one cateogry',
@@ -227,7 +285,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
             rules={[
-              { required: true, message: 'Select atleast one cateogry' },
+              { required: false, message: 'Select atleast one cateogry' },
               // {
               //   transform: value => !value?.length,
               //   message: 'Select at least one cateogry',
@@ -240,13 +298,13 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             isMulti
             options={styleOpts}
             isSearchable
-            name="Style"
+            name="style"
             label="style"
             placeholder="Select style"
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
             rules={[
-              { required: true, message: 'Select atleast one cateogry' },
+              { required: false, message: 'Select atleast one cateogry' },
               // {
               //   transform: value => !value?.length,
               //   message: 'Select at least one cateogry',
@@ -262,7 +320,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             name="metaTitle"
             placeholder="Metatitle"
             rules={[
-              { required: true, message: 'Please enter meta title' },
+              { required: false, message: 'Please enter meta title' },
               {
                 pattern: /^[A-Z]/,
                 message: 'First character should be capital',
@@ -281,7 +339,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             name="metaDescription"
             placeholder="Metadescription"
             rules={[
-              { required: true, message: 'Please enter post meta description' },
+              { required: false, message: 'Please enter post meta description' },
               {
                 pattern: /^[A-Z]/,
                 message: 'First character should be capital',
@@ -299,7 +357,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             label="keywords"
             name="keywords"
             placeholder="Keywords"
-            rules={[{ required: true, message: 'Please enter post keywords' }]}>
+            rules={[{ required: false, message: 'Please enter post keywords' }]}>
             <Field />
           </Form.Item>
         </Grid>
@@ -308,9 +366,9 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             sm
             type="textarea"
             label="Short Description"
-            name="descrption"
+            name="shortDescription"
             placeholder="Short Descrption"
-            rules={[{ required: true, message: 'Please enter sku' }]}>
+            rules={[{ required: false, message: 'Please enter sku' }]}>
             <Field />
           </Form.Item>
         </div>
@@ -319,20 +377,20 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             label="Feature Image"
             name="featureImg"
             placeholder="Select Banner Image"
-            displayFile={blogData?.bannerImg || null}
+            displayFile={productData?.featureImg || null}
             type="chooseFile"
             noMargin
-            rules={[{ required: true, message: 'Select Banner Image' }]}>
+            rules={[{ required: false, message: 'Select Banner Image' }]}>
             <Field />
           </Form.Item>
 
           <Form.Item
-            name="alt"
             type="text"
             placeholder="Alt"
+            name="featureAlt"
             sm
             noMargin
-            rules={[{ required: true, message: 'Enter Alt' }]}>
+            rules={[{ required: false, message: 'Enter Alt' }]}>
             <Field />
           </Form.Item>
         </div>
@@ -345,22 +403,23 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             </button>
           </div>
           <Grid xs={1} lg={3} colGap={10} rowGap={10}>
-            {galleryFields.map((field, index) => (
-              <div className="upload-field-holder">
+            {galleryFields?.map((field, index) => (
+              <div className="upload-field-holder" key={field?.id}>
                 <Form.Item
-                  key={field.name}
-                  name={field.name}
+                  name={field?.name}
                   type="chooseFile"
                   small
-                  rules={[{ required: index < 3, message: `Select ${field.label}` }]}>
+                  value={field?.file}
+                  onChange={(file, path) => updateGalleryFile(index, file, path)}
+                  rules={[{ required: index < 3, message: `Select ${field?.label}` }]}>
                   <Field />
                 </Form.Item>
                 <Form.Item
-                  name="alt"
+                  name={`alt_${field?.name}`}
                   type="text"
                   placeholder="Alt"
                   sm
-                  rules={[{ required: true, message: 'Enter Alt' }]}>
+                  rules={[{ required: false, message: 'Enter Alt' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -372,15 +431,20 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
           <span className="label">First</span>
           <Grid xs={1} lg={2} colGap={10}>
             <div>
-              <Form.Item label="Title" name="title" type="text" sm rules={[{ required: true, message: 'Enter title' }]}>
+              <Form.Item
+                label="Title"
+                name="first_row_title"
+                type="text"
+                sm
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="Descripion"
-                  name="feature_descrption"
+                  name="first_row_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -388,18 +452,18 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="First Feauture Title"
-                name="first_feature_title"
+                name="first_row_first_feature_title"
                 type="text"
                 sm
-                rules={[{ required: true, message: 'Enter title' }]}>
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="First Feaure Descripion"
-                  name="first_feature_descrption"
+                  name="first_row_first_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -407,18 +471,18 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="Second Feauture Title"
-                name="second_feature_title"
+                name="first_row_second_feature_title"
                 type="text"
                 sm
-                rules={[{ required: true, message: 'Enter title' }]}>
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="Second Feaure Descripion"
-                  name="second_feature_descrption"
+                  name="first_row_second_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -427,15 +491,20 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
           <span className="label">Second</span>
           <Grid xs={1} lg={2} colGap={10}>
             <div>
-              <Form.Item label="Title" name="title" type="text" sm rules={[{ required: true, message: 'Enter title' }]}>
+              <Form.Item
+                label="Title"
+                name="second_row_title"
+                type="text"
+                sm
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="Descripion"
-                  name="feature_descrption"
+                  name="second_row_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -443,18 +512,18 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="First Feauture Title"
-                name="first_feature_title"
+                name="second_row_first_feature_title"
                 type="text"
                 sm
-                rules={[{ required: true, message: 'Enter title' }]}>
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="First Feaure Descripion"
-                  name="first_feature_descrption"
+                  name="second_row_first_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -462,18 +531,18 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="Second Feauture Title"
-                name="second_feature_title"
+                name="second_row_second_feature_title"
                 type="text"
                 sm
-                rules={[{ required: true, message: 'Enter title' }]}>
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="Second Feaure Descripion"
-                  name="second_feature_descrption"
+                  name="second_row_second_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -482,15 +551,20 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
           <span className="label">Third</span>
           <Grid xs={1} lg={2} colGap={10}>
             <div>
-              <Form.Item label="Title" name="title" type="text" sm rules={[{ required: true, message: 'Enter title' }]}>
+              <Form.Item
+                label="Title"
+                name="third_row_feature_title"
+                type="text"
+                sm
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="Descripion"
-                  name="feature_descrption"
+                  name="third_row_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -498,18 +572,18 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="First Feauture Title"
-                name="first_feature_title"
+                name="third_row_first_feature_title"
                 type="text"
                 sm
-                rules={[{ required: true, message: 'Enter title' }]}>
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="First Feaure Descripion"
-                  name="first_feature_descrption"
+                  name="third_row_first_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -517,18 +591,18 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="Second Feauture Title"
-                name="second_feature_title"
+                name="third_row_second_feature_title"
                 type="text"
                 sm
-                rules={[{ required: true, message: 'Enter title' }]}>
+                rules={[{ required: false, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
                 <Form.Item
                   label="Second Feaure Descripion"
-                  name="second_feature_descrption"
+                  name="third_row_second_feature_description"
                   type="textarea"
-                  rules={[{ required: true, message: 'Enter title' }]}>
+                  rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -543,7 +617,7 @@ function CreateProduct({ isEdit, blogData, onClose = () => {} }) {
             name="slug"
             placeholder="the-future-of-technology-how-innovations-are-shaping-our-lives"
             rules={[
-              { required: true, message: 'Slug is required.' },
+              { required: false, message: 'Slug is required.' },
               { min: 3, message: 'Slug must be at least 3 characters long' },
               { max: 100, message: 'Slug cannot be longer than 100 characters.' },
               {

@@ -41,7 +41,8 @@ export const UploadFileWrapper = styled.div`
 `;
 
 export const SelectedFiles = styled.div`
-  height: 300px;
+  /* height: 300px; */
+  height: auto;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
@@ -65,7 +66,7 @@ export const SelectedFiles = styled.div`
 
       img {
         width: 100%;
-        height: 120px;
+        height: 106px;
         margin: 0 0 5px;
       }
 
