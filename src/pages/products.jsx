@@ -17,6 +17,7 @@ import Toast from 'components/molecules/Toast';
 import BlogDetailModal from 'components/organisms/BlogDetailModal';
 import AddNewLanguageBlogForm from 'components/organisms/addNewBlogLanguage';
 import productService from 'services/ProductService';
+import CreateProduct from 'components/organisms/Product/CreateProduct';
 
 export default function Product() {
   const [searchQuery, setSearchQuery] = useState({
@@ -49,20 +50,6 @@ export default function Product() {
   };
   const actionBtns = _ => (
     <ActionBtnHolder numOfBtns={4}>
-      {hasPermission('post.view') && (
-        <ModalContainer
-          lg
-          title="Post Detail"
-          btnComponent={({ onClick }) => (
-            <Tooltip title={`Details (${_?.content?.title.slice(0, 15)}`} type="dark">
-              <Button unStyled css="color: var(--primary);" onClick={onClick}>
-                <i className="material-icons-outlined">description</i>
-              </Button>
-            </Tooltip>
-          )}
-          content={({ onClose }) => <BlogDetailModal onClose={onClose} blog={_} />}
-        />
-      )}
       {hasPermission('blogs.update') && (
         <ModalContainer
           lg
@@ -74,33 +61,9 @@ export default function Product() {
               </Button>
             </Tooltip>
           )}
-          content={({ onClose }) => <BlogForm onClose={onClose} isEdit={true} blogData={_} />}
+          content={({ onClose }) => <CreateProduct onClose={onClose} isEdit={true} productData={_} />}
         />
       )}
-
-      {/* {
-        // hasPermission('post.view-comments')
-        _?.content?.length < 4 && (
-          <ModalContainer
-            lg
-            title="Add In New Language"
-            btnComponent={({ onClick }) => (
-              <Tooltip title="Add in New Language" type="dark">
-                <Button unStyled css="color: var(--primary);" onClick={onClick}>
-                  <i className="material-icons-outlined">comments</i>
-                </Button>
-              </Tooltip>
-            )}
-            content={({ onClose }) => (
-              <AddNewLanguageBlogForm
-                id={_?.id}
-                onClose={onClose}
-                currentLanguages={_?.content?.map(ele => ele?.language)}
-              />
-            )}
-          />
-        )
-      } */}
       {hasPermission('blogs.delete') && (
         <ConfirmationModal
           title="Are you sure you want to delete this record?"
@@ -125,13 +88,14 @@ export default function Product() {
         _?.title,
         _.author?.name,
         _.category?.title,
+        _.category?.title,
         actionBtns(_),
       ]),
       totalCount: products_data.totalItems,
     }),
     [products_data],
   );
-  const columnNames = [`Created at`, `Title`, `Category`, ``];
+  const columnNames = [`Created at`, `Title`, `SKU`, `Category`, `Industry`, ``];
 
   return (
     <TableLayout

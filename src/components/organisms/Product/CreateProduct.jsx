@@ -28,9 +28,9 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
   const [error, setError] = useState(null);
 
   const galleryImages = [
-    { id: 1, name: 'gallery_img_1', label: 'Gallery Image 1', file: null, path: '', alt: '' },
-    { id: 2, name: 'gallery_img_2', label: 'Gallery Image 2', file: null, path: '', alt: '' },
-    { id: 3, name: 'gallery_img_3', label: 'Gallery Image 3', file: null, path: '', alt: '' },
+    { id: 1, name: 'gallery_img_1', label: 'Gallery Image 1', file: null, alt: '' },
+    { id: 2, name: 'gallery_img_2', label: 'Gallery Image 2', file: null, alt: '' },
+    { id: 3, name: 'gallery_img_3', label: 'Gallery Image 3', file: null, alt: '' },
   ];
 
   const [galleryFields, setGalleryFields] = useState(galleryImages);
@@ -61,101 +61,125 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
 
   useEffect(() => {
     if (isEdit) {
+      console.log(productData);
+      const category = productData?.categories?.map(i => ({ label: i?.title, value: i?._id }));
+      const industry = productData?.categories?.map(i => ({ label: i?.title, value: i?._id }));
+      const style = productData?.categories?.map(i => ({ label: i?.title, value: i?._id }));
+      if (isEdit && productData?.galleryImages?.length) {
+        const mappedGallery = productData.galleryImages.map((img, index) => ({
+          id: index + 1,
+          name: `gallery_img_${index + 1}`,
+          label: `Gallery Image ${index + 1}`,
+          file: img.image,
+          alt: img.alt || '',
+          _id: img._id,
+        }));
+        setGalleryFields(mappedGallery);
+      }
       form.setFieldsValue({
         title: productData?.title,
+        sku: productData?.sku,
+        category,
+        industry,
+        style,
         metaTitle: productData?.metaTitle,
         metaDescription: productData?.metaDescription,
-        category: categoryOpts?.find(data => data.value === productData?.category?._id),
-        bannerImg: productData?.bannerImg,
-        keywords: productData?.keywords?.map(item => item),
+        keywords: productData?.keywords,
+        shortDescription: productData?.shortDescription,
+        featureImg: productData?.featureImage,
+        featureImgAlt: productData?.featureImageAlt,
+        galleryImages: productData?.galleryFields?.map(i => i),
+        galleryImagesAlt: productData?.galleryFields?.map(i => i?.alt),
+
+        first_row_title: productData?.featureDetails?.first?.title,
+        first_row_feature_description: productData?.featureDetails?.first?.description,
+        first_row_first_feature_title: productData?.featureDetails?.first?.firstFeatureTitle,
+        first_row_first_feature_description: productData?.featureDetails?.first?.firstFeatureDescription,
+        first_row_second_feature_title: productData?.featureDetails?.first?.secondFeatureDescription,
+        first_row_second_feature_description: productData?.featureDetails?.first?.secondFeatureTitle,
+
+        second_row_title: productData?.featureDetails?.second?.title,
+        second_row_feature_description: productData?.featureDetails?.second?.description,
+        second_row_first_feature_title: productData?.featureDetails?.second?.firstFeatureTitle,
+        second_row_first_feature_description: productData?.featureDetails?.second?.firstFeatureDescription,
+        second_row_second_feature_title: productData?.featureDetails?.second?.secondFeatureDescription,
+        second_row_second_feature_description: productData?.featureDetails?.second?.secondFeatureTitle,
+
+        third_row_title: productData?.featureDetails?.third?.title,
+        third_row_feature_description: productData?.featureDetails?.third?.description,
+        third_row_first_feature_title: productData?.featureDetails?.third?.firstFeatureTitle,
+        third_row_first_feature_description: productData?.featureDetails?.third?.firstFeatureDescription,
+        third_row_second_feature_title: productData?.featureDetails?.third?.secondFeatureDescription,
+        third_row_second_feature_description: productData?.featureDetails?.third?.secondFeatureTitle,
+
         slug: productData?.slug,
       });
+
       setDescription(productData?.description);
     }
   }, [productData, categoryOpts]);
-
   const onSubmit = async data => {
     let desc = description || '';
 
     setError(null);
     setLoading(true);
-    console.log(data?.featureImg);
-    const productData = {
+    const payload = {
       title: data?.title,
       sku: data?.sku,
-      categories: data?.category,
-      industries: data?.industry,
-      styles: data?.style,
+      categories: data?.category?.map(i => i?.value),
+      industries: data?.industry?.map(i => i?.value),
+      styles: data?.style?.map(i => i?.value),
       metaTitle: data?.metaTitle,
       metaDescription: data?.metaDescription,
       keywords: data?.keywords,
       shortDescription: data?.shortDescription,
       featureImage: data?.featureImg,
-      featureImageAlt: data?.featureAlt,
-      galleryImages: galleryFields?.map(i => i),
+      featureImageAlt: data?.featureImgAlt,
+      galleryImages: galleryFields?.map(i => i?.image),
       galleryImagesAlt: galleryFields?.map(i => i?.alt),
       featureDetails: {
-        first: [
-          {
-            title: data?.first_row_title,
-            description: data?.first_row_feature_description,
-          },
-          {
-            firstFeatureTitle: data?.first_row_first_feature_title,
-            firstFeatureDescription: data?.first_row_first_feature_title,
-          },
-          {
-            secondFeatureTitle: data?.first_row_second_feature_title,
-            secondFeatureDescription: data?.first_row_second_feature_description,
-          },
-        ],
-        second: [
-          {
-            title: data?.second_row_title,
-            description: data?.second_row_feature_description,
-          },
-          {
-            firstFeatureTitle: data?.second_row_first_feature_title,
-            firstFeatureDescription: data?.second_row_first_feature_title,
-          },
-          {
-            secondFeatureTitle: data?.second_row_second_feature_title,
-            secondFeatureDescription: data?.second_row_second_feature_description,
-          },
-        ],
-        third: [
-          {
-            title: data?.third_row_feature_title,
-            description: data?.third_row_feature_description,
-          },
-          {
-            firstFeatureTitle: data?.third_row_first_feature_title,
-            firstFeatureDescription: data?.third_row_first_feature_title,
-          },
-          {
-            secondFeatureTitle: data?.third_row_second_feature_title,
-            secondFeatureDescription: data?.third_row_second_feature_description,
-          },
-        ],
+        first: {
+          title: data?.first_row_title,
+          description: data?.first_row_feature_description,
+          firstFeatureTitle: data?.first_row_first_feature_title,
+          firstFeatureDescription: data?.first_row_first_feature_title,
+          secondFeatureTitle: data?.first_row_second_feature_title,
+          secondFeatureDescription: data?.first_row_second_feature_description,
+        },
+        second: {
+          title: data?.second_row_title,
+          description: data?.second_row_feature_description,
+          firstFeatureTitle: data?.second_row_first_feature_title,
+          firstFeatureDescription: data?.second_row_first_feature_title,
+          secondFeatureTitle: data?.second_row_second_feature_title,
+          secondFeatureDescription: data?.second_row_second_feature_description,
+        },
+        third: {
+          title: data?.third_row_title,
+          description: data?.third_row_feature_description,
+          firstFeatureTitle: data?.third_row_first_feature_title,
+          firstFeatureDescription: data?.third_row_first_feature_title,
+          secondFeatureTitle: data?.third_row_second_feature_title,
+          secondFeatureDescription: data?.third_row_second_feature_description,
+        },
       },
-      slug: data?.slug,
     };
-    console.log(productData);
 
     try {
       let res;
       if (isEdit) {
-        await productService.updateProduct(products_data?._id, convertToFormData(productData));
+        res = await productService.updateProduct(productData?._id, convertToFormData(payload));
       } else {
-        res = await productService.createProduct(convertToFormData(productData));
+        res = await productService.createProduct(convertToFormData(payload));
       }
       refetch();
       onClose();
       setLoading(false);
-      Toast({
-        type: 'success',
-        message: res?.message || 'Post saved successfully',
-      });
+      if (res?.success)
+        Toast({
+          type: 'success',
+          message: res?.message || 'Post saved successfully',
+        });
     } catch (ex) {
       setLoading(false);
       Toast({
@@ -164,14 +188,6 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
       });
     }
   };
-
-  // const addGalleryField = () => {
-  //   const nextIndex = galleryFields.length + 1;
-  //   setGalleryFields(prev => [
-  //     ...prev,
-  //     { name: `gallery_img_${nextIndex}`, label: `Gallery Image ${nextIndex}`, alt: '' },
-  //   ]);
-  // };
 
   const addGalleryField = () => {
     const nextIndex = galleryFields.length + 1;
@@ -182,25 +198,15 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
         name: `gallery_img_${nextIndex}`,
         label: `Gallery Image ${nextIndex}`,
         file: null,
-        path: '',
         alt: '',
       },
     ]);
   };
 
-  // const updateGalleryAlt = (index, value) => {
-  //   setGalleryFields(prev => {
-  //     const updated = [...prev];
-  //     updated[index].alt = value;
-  //     return updated;
-  //   });
-  // };
-
   const updateGalleryFile = (index, file, path) => {
     setGalleryFields(prev => {
       const updated = [...prev];
       updated[index].file = file;
-      updated[index].path = path;
       return updated;
     });
     form.setFieldsValue({
@@ -377,7 +383,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             label="Feature Image"
             name="featureImg"
             placeholder="Select Banner Image"
-            displayFile={productData?.featureImg || null}
+            displayFile={productData?.featureImage || null}
             type="chooseFile"
             noMargin
             rules={[{ required: false, message: 'Select Banner Image' }]}>
@@ -387,7 +393,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
           <Form.Item
             type="text"
             placeholder="Alt"
-            name="featureAlt"
+            name="featureImgAlt"
             sm
             noMargin
             rules={[{ required: false, message: 'Enter Alt' }]}>
@@ -410,14 +416,18 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   type="chooseFile"
                   small
                   value={field?.file}
-                  onChange={(file, path) => updateGalleryFile(index, file, path)}
-                  rules={[{ required: index < 3, message: `Select ${field?.label}` }]}>
+                  displayFile={field.file}
+                  onChange={(file, path) => updateGalleryFile(index, file)}
+                  // rules={[{ required: index < 3, message: `Select ${field?.label}` }]}>
+                  rules={[{ required: false, message: `Select ${field?.label}` }]}>
                   <Field />
                 </Form.Item>
                 <Form.Item
                   name={`alt_${field?.name}`}
                   type="text"
                   placeholder="Alt"
+                  value={field?.alt}
+                  onChange={e => updateGalleryAlt(index, e.target.value)}
                   sm
                   rules={[{ required: false, message: 'Enter Alt' }]}>
                   <Field />
@@ -502,7 +512,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
               <div className="product-description">
                 <Form.Item
                   label="Descripion"
-                  name="second_row_description"
+                  name="second_row_feature_description"
                   type="textarea"
                   rules={[{ required: false, message: 'Enter title' }]}>
                   <Field />
@@ -553,7 +563,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             <div>
               <Form.Item
                 label="Title"
-                name="third_row_feature_title"
+                name="third_row_title"
                 type="text"
                 sm
                 rules={[{ required: false, message: 'Enter title' }]}>
