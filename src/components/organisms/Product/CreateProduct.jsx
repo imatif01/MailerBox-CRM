@@ -61,20 +61,27 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
 
   useEffect(() => {
     if (isEdit) {
-      console.log(productData);
       const category = productData?.categories?.map(i => ({ label: i?.title, value: i?._id }));
-      const industry = productData?.categories?.map(i => ({ label: i?.title, value: i?._id }));
-      const style = productData?.categories?.map(i => ({ label: i?.title, value: i?._id }));
+      const industry = productData?.industries?.map(i => ({ label: i?.title, value: i?._id }));
+      const style = productData?.styles?.map(i => ({ label: i?.title, value: i?._id }));
       if (isEdit && productData?.galleryImages?.length) {
-        const mappedGallery = productData.galleryImages.map((img, index) => ({
+        const mappedGallery = productData?.galleryImages?.map((field, index) => ({
           id: index + 1,
           name: `gallery_img_${index + 1}`,
           label: `Gallery Image ${index + 1}`,
-          file: img.image,
-          alt: img.alt || '',
-          _id: img._id,
+          file: field.image,
+          alt: field.alt || '',
+          _id: field._id,
         }));
+
         setGalleryFields(mappedGallery);
+
+        const galleryValues = {};
+        mappedGallery?.forEach((g, idx) => {
+          galleryValues[g.name] = g.file;
+          galleryValues[`alt_${g.name}`] = g.alt;
+        });
+        form.setFieldsValue(galleryValues);
       }
       form.setFieldsValue({
         title: productData?.title,
@@ -88,7 +95,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
         shortDescription: productData?.shortDescription,
         featureImg: productData?.featureImage,
         featureImgAlt: productData?.featureImageAlt,
-        galleryImages: productData?.galleryFields?.map(i => i),
+        galleryImages: productData?.galleryFields?.map(i => i?.file),
         galleryImagesAlt: productData?.galleryFields?.map(i => i?.alt),
 
         first_row_title: productData?.featureDetails?.first?.title,
@@ -135,7 +142,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
       shortDescription: data?.shortDescription,
       featureImage: data?.featureImg,
       featureImageAlt: data?.featureImgAlt,
-      galleryImages: galleryFields?.map(i => i?.image),
+      galleryImages: galleryFields?.map(i => i?.file),
       galleryImagesAlt: galleryFields?.map(i => i?.alt),
       featureDetails: {
         first: {
@@ -203,7 +210,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
     ]);
   };
 
-  const updateGalleryFile = (index, file, path) => {
+  const updateGalleryFile = (index, file) => {
     setGalleryFields(prev => {
       const updated = [...prev];
       updated[index].file = file;
@@ -239,7 +246,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             name="title"
             placeholder="Post Title"
             rules={[
-              { required: false, message: 'Please enter post title' },
+              { required: true, message: 'Please enter post title' },
               {
                 pattern: /^[A-Z]/,
                 message: 'First character should be capital',
@@ -258,7 +265,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             name="sku"
             placeholder="sku"
             sm
-            rules={[{ required: false, message: 'Please enter sku' }]}>
+            rules={[{ required: true, message: 'Please enter sku' }]}>
             <Field />
           </Form.Item>
           <Form.Item
@@ -272,7 +279,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
             rules={[
-              { required: false, message: 'Select atleast one cateogry' },
+              { required: true, message: 'Select atleast one cateogry' },
               // {
               //   transform: value => !value?.length,
               //   message: 'Select at least one cateogry',
@@ -291,7 +298,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
             rules={[
-              { required: false, message: 'Select atleast one cateogry' },
+              { required: true, message: 'Select atleast one cateogry' },
               // {
               //   transform: value => !value?.length,
               //   message: 'Select at least one cateogry',
@@ -310,7 +317,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             hideSelectedOptions={false}
             closeMenuOnSelect={true}
             rules={[
-              { required: false, message: 'Select atleast one cateogry' },
+              { required: true, message: 'Select atleast one cateogry' },
               // {
               //   transform: value => !value?.length,
               //   message: 'Select at least one cateogry',
@@ -326,7 +333,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             name="metaTitle"
             placeholder="Metatitle"
             rules={[
-              { required: false, message: 'Please enter meta title' },
+              { required: true, message: 'Please enter meta title' },
               {
                 pattern: /^[A-Z]/,
                 message: 'First character should be capital',
@@ -345,7 +352,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             name="metaDescription"
             placeholder="Metadescription"
             rules={[
-              { required: false, message: 'Please enter post meta description' },
+              { required: true, message: 'Please enter post meta description' },
               {
                 pattern: /^[A-Z]/,
                 message: 'First character should be capital',
@@ -363,7 +370,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             label="keywords"
             name="keywords"
             placeholder="Keywords"
-            rules={[{ required: false, message: 'Please enter post keywords' }]}>
+            rules={[{ required: true, message: 'Please enter post keywords' }]}>
             <Field />
           </Form.Item>
         </Grid>
@@ -374,7 +381,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             label="Short Description"
             name="shortDescription"
             placeholder="Short Descrption"
-            rules={[{ required: false, message: 'Please enter sku' }]}>
+            rules={[{ required: true, message: 'Please enter sku' }]}>
             <Field />
           </Form.Item>
         </div>
@@ -386,7 +393,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             displayFile={productData?.featureImage || null}
             type="chooseFile"
             noMargin
-            rules={[{ required: false, message: 'Select Banner Image' }]}>
+            rules={[{ required: true, message: 'Select Banner Image' }]}>
             <Field />
           </Form.Item>
 
@@ -396,7 +403,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             name="featureImgAlt"
             sm
             noMargin
-            rules={[{ required: false, message: 'Enter Alt' }]}>
+            rules={[{ required: true, message: 'Enter Alt' }]}>
             <Field />
           </Form.Item>
         </div>
@@ -416,10 +423,10 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   type="chooseFile"
                   small
                   value={field?.file}
-                  displayFile={field.file}
-                  onChange={(file, path) => updateGalleryFile(index, file)}
-                  // rules={[{ required: index < 3, message: `Select ${field?.label}` }]}>
-                  rules={[{ required: false, message: `Select ${field?.label}` }]}>
+                  displayFile={field.file?.preview || field?.file || null}
+                  fileName={field?.file?.name}
+                  onChange={file => updateGalleryFile(index, file)}
+                  rules={[{ required: index < 3, message: `Select ${field?.label}` }]}>
                   <Field />
                 </Form.Item>
                 <Form.Item
@@ -427,7 +434,9 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   type="text"
                   placeholder="Alt"
                   value={field?.alt}
-                  onChange={e => updateGalleryAlt(index, e.target.value)}
+                  onChange={e => {
+                    updateGalleryAlt(index, e.target.value);
+                  }}
                   sm
                   rules={[{ required: false, message: 'Enter Alt' }]}>
                   <Field />
@@ -446,7 +455,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="first_row_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -454,7 +463,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="Descripion"
                   name="first_row_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -465,7 +474,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="first_row_first_feature_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -473,7 +482,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="First Feaure Descripion"
                   name="first_row_first_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -484,7 +493,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="first_row_second_feature_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -492,7 +501,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="Second Feaure Descripion"
                   name="first_row_second_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -506,7 +515,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="second_row_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -514,7 +523,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="Descripion"
                   name="second_row_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -525,7 +534,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="second_row_first_feature_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -533,7 +542,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="First Feaure Descripion"
                   name="second_row_first_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -544,7 +553,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="second_row_second_feature_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -552,7 +561,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="Second Feaure Descripion"
                   name="second_row_second_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -566,7 +575,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="third_row_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -574,7 +583,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="Descripion"
                   name="third_row_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -585,7 +594,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="third_row_first_feature_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -593,7 +602,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="First Feaure Descripion"
                   name="third_row_first_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -604,7 +613,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                 name="third_row_second_feature_title"
                 type="text"
                 sm
-                rules={[{ required: false, message: 'Enter title' }]}>
+                rules={[{ required: true, message: 'Enter title' }]}>
                 <Field />
               </Form.Item>
               <div className="product-description">
@@ -612,7 +621,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
                   label="Second Feaure Descripion"
                   name="third_row_second_feature_description"
                   type="textarea"
-                  rules={[{ required: false, message: 'Enter title' }]}>
+                  rules={[{ required: true, message: 'Enter title' }]}>
                   <Field />
                 </Form.Item>
               </div>
@@ -627,7 +636,7 @@ function CreateProduct({ isEdit, productData, onClose = () => {} }) {
             name="slug"
             placeholder="the-future-of-technology-how-innovations-are-shaping-our-lives"
             rules={[
-              { required: false, message: 'Slug is required.' },
+              { required: true, message: 'Slug is required.' },
               { min: 3, message: 'Slug must be at least 3 characters long' },
               { max: 100, message: 'Slug cannot be longer than 100 characters.' },
               {

@@ -76,6 +76,7 @@ const Styling = css`
     margin: 0;
   }
 
+
   textarea {
     resize: vertical;
     vertical-align: top;

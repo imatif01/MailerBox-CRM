@@ -16,10 +16,11 @@ const UploadFile = ({
   error,
   multiple = false,
   maxFiles = 1,
-  accept = { 'image/jpeg': ['.jpeg', '.jpg'], 'image/png': ['.png'] },
+  accept = { 'image/jpeg': ['.jpeg', '.jpg'], 'image/png': ['.png'], 'image/webp': ['.webp'] },
   onChange,
   fileSize = 15,
   displayFile,
+  fileName,
   small,
   ...props
 }) => {
@@ -241,7 +242,7 @@ const UploadFile = ({
                       src={file.preview}
                       loading="lazy"
                     />
-                    {file.name}
+                    {fileName ? fileName : file?.name}
                     <p style={{ marginBottom: '0' }}>
                       <strong>{file.formattedSize}</strong>
                     </p>

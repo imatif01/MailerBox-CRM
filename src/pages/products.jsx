@@ -33,9 +33,9 @@ export default function Product() {
 
   const { products_data, products_loading } = productService.GetAllProducts(searchQuery, refetch);
 
-  const onDeleteBlog = async id => {
+  const onDeleteProduct = async id => {
     try {
-      await productService.deleteBlog(id);
+      await productService.deleteProduct(id);
       refetch();
       Toast({
         message: 'Post deleted successfully',
@@ -69,7 +69,7 @@ export default function Product() {
           title="Are you sure you want to delete this record?"
           subtitle="you can't undo this action"
           deleteModal
-          onOk={() => onDeleteBlog(_._id)}
+          onOk={() => onDeleteProduct(_._id)}
           btnComponent={({ onClick }) => (
             <Tooltip title="Delete" type="dark">
               <Button unStyled size={20} className="delete-btn" onClick={onClick}>
@@ -81,14 +81,15 @@ export default function Product() {
       )}
     </ActionBtnHolder>
   );
-  const { totalCount, blogs_rows } = useMemo(
+  const { totalCount, products_rows } = useMemo(
     () => ({
-      blogs_rows: products_data?.products?.map(_ => [
+      products_rows: products_data?.products?.map(_ => [
         format(new Date(_.created_at), 'yyyy-MM-dd'),
         _?.title,
-        _.author?.name,
-        _.category?.title,
-        _.category?.title,
+        _?.sku,
+        _.categories?.map(i => i?.title).join(', '),
+        _.industries?.map(i => i?.title).join(', '),
+        ,
         actionBtns(_),
       ]),
       totalCount: products_data.totalItems,
@@ -109,7 +110,7 @@ export default function Product() {
       currentPage={searchQuery.page}
       totalCount={totalCount}
       pageSize={searchQuery.pageSize}>
-      <Table width={1200} loading={products_loading} rowsData={blogs_rows} columnNames={columnNames} noPadding />
+      <Table width={1200} loading={products_loading} rowsData={products_rows} columnNames={columnNames} noPadding />
     </TableLayout>
   );
 }

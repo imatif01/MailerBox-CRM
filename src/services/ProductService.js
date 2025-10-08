@@ -70,8 +70,8 @@ const productService = {
     throw new Error(message ?? 'Something went wrong');
   },
 
-  async deleteProduct(id, payload) {
-    let res = await Fetch.delete(`${this._url}/delete/${id}`, payload);
+  async deleteProduct(id) {
+    let res = await Fetch.delete(`${this._url}/delete/${id}`);
     if (res.status >= 200 && res.status < 300) {
       res = await res.json();
       return res;

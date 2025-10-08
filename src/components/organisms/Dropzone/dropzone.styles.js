@@ -66,7 +66,7 @@ export const SelectedFiles = styled.div`
 
       img {
         width: 100%;
-        height: 106px;
+        height: 123px;
         margin: 0 0 5px;
       }
 
