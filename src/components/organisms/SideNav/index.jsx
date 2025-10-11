@@ -39,6 +39,7 @@ function Navbar() {
   const sideBarItems = useMemo(() => {
     return sideNavData?.map((item, index) => <SubMenu item={item} key={index} />);
   }, [searchText, sideNavData, allowedPages]);
+
   const toggleVisibility = () => {
     setActive(!active);
   };

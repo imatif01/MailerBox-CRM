@@ -31,7 +31,28 @@
     "buttons": ["create-admin"],
     "icon": "admin_panel_settings"
   },
+  {
+    "name": "Customers",
+    "file": "customers",
+    "navigations": true,
+    "live": true,
+    "icon": "content_paste_search"
+  },
+  {
+    "name": "Peoduct Enquiry",
+    "file": "product-enquiries",
+    "navigations": true,
+    "live": true,
+    "icon": "contacts"
+  },
 
+  {
+    "name": "General Enquiry",
+    "file": "general-enquiry",
+    "navigations": true,
+    "live": true,
+    "icon": "contacts"
+  },
   {
     "name": "Products",
     "file": "products",

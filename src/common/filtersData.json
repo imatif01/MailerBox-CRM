@@ -84,6 +84,11 @@
     "filters": ["text", "date"],
     "filtersData": {}
   },
+  {
+    "key": "product-enquiries",
+    "filters": ["text", "date"],
+    "filtersData": {}
+  },
 
   {
     "key": "general-enquiry",

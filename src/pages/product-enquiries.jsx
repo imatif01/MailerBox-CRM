@@ -11,7 +11,7 @@ import Table from 'components/molecules/Table';
 import adminService from 'services/adminService';
 import enquiryService from 'services/enquiryService';
 
-export default function Enquiry() {
+export default function ProductEnquiry() {
   const [searchQuery, setSearchQuery] = useState({
     page: 1,
     pageSize: 10,
